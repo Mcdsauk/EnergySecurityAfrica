@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Africa Energy Security Index</title>
+<meta name="description" content="A comparable measure of energy security for African countries, 2005-2023, developed by Prof. Sin-Yu Ho and Dasauki C. Musa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F5F2; --surface:#FFFFFF; --ink:#102A33; --ink-soft:#4A5E64; --rule:#D3DBD6;
+  --s1:#E4EEE8; --s2:#B6D3C5; --s3:#78AE98; --s4:#3A8670; --s5:#135A4D;
+  --sun:#E9A912; --on-dark:#F3F5F2; --nodata:#E3E6E3; --focus:#E9A912;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:"Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#0E1D22; --surface:#15282E; --ink:#E8EEEA; --ink-soft:#A6B6B3; --rule:#28414A;
+  --s1:#1C3A38; --s2:#255A50; --s3:#3E8C76; --s4:#6CBBA0; --s5:#B3E3CF; --nodata:#22353B; --on-dark:#0E1D22;
+}}
+:root[data-theme="dark"]{
+  --paper:#0E1D22; --surface:#15282E; --ink:#E8EEEA; --ink-soft:#A6B6B3; --rule:#28414A;
+  --s1:#1C3A38; --s2:#255A50; --s3:#3E8C76; --s4:#6CBBA0; --s5:#B3E3CF; --nodata:#22353B; --on-dark:#0E1D22;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 80px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration-color:var(--s3);text-underline-offset:3px}
+a:hover{text-decoration-color:var(--ink)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:3px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15;margin:0 0 .5em;letter-spacing:-.01em}
+h1{font-size:clamp(2.2rem,4.6vw,3.6rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,2.8vw,2.2rem)}
+h3{font-size:1.3rem}
+p{margin:0 0 1em;max-width:68ch}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* header */
+header.site{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand svg{flex:none}
+.brand b{font-family:var(--serif);font-size:1.15rem;font-weight:700;display:block;line-height:1.1}
+.brand small{display:block;color:var(--ink-soft);font-size:.8rem}
+nav.main ul{list-style:none;display:flex;gap:4px;margin:0;padding:0}
+nav.main a{display:block;padding:8px 14px;border-radius:6px;text-decoration:none;font-weight:500;font-size:.95rem;color:var(--ink-soft)}
+nav.main a:hover{color:var(--ink);background:var(--s1)}
+nav.main a[aria-current="page"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--sun)}
+.menu-btn{display:none;background:none;border:1px solid var(--rule);border-radius:6px;padding:8px 12px;font:inherit;color:var(--ink)}
+@media (max-width:860px){
+  .menu-btn{display:block}
+  nav.main{display:none;position:absolute;left:0;right:0;top:100%;background:var(--paper);border-bottom:1px solid var(--rule)}
+  nav.main.open{display:block}
+  nav.main ul{flex-direction:column;padding:8px 16px 16px}
+}
+
+/* pages */
+.page{display:none;padding:56px 0 88px}
+.page.active{display:block}
+.lede{font-size:1.2rem;color:var(--ink-soft);max-width:60ch}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{display:inline-block;padding:12px 20px;border-radius:6px;font-weight:600;text-decoration:none;border:1.5px solid var(--ink);font-size:.95rem}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn.primary:hover{background:var(--s5);border-color:var(--s5)}
+.btn:not(.primary):hover{background:var(--s1)}
+.btn[aria-disabled="true"]{opacity:.5;pointer-events:none}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:48px;align-items:start}
+@media (max-width:960px){.hero{grid-template-columns:1fr}}
+.notice{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;color:var(--ink-soft);background:var(--surface);border:1px solid var(--rule);padding:6px 12px;border-radius:999px;margin-bottom:24px}
+.notice i{width:8px;height:8px;border-radius:50%;background:var(--sun);display:block}
+
+/* tile map */
+.mapcard{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:20px 20px 16px}
+.maphead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.maphead h2{font-size:1.15rem;margin:0}
+.maphead select{font:inherit;font-size:.9rem;padding:6px 8px;border-radius:6px;border:1px solid var(--rule);background:var(--paper);color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;margin:12px 0}
+.tile{aspect-ratio:1;border:0;border-radius:5px;font:600 clamp(.5rem,1.1vw,.72rem)/1 var(--sans);letter-spacing:.02em;cursor:pointer;color:var(--ink);background:var(--nodata);transition:transform .12s ease}
+.tile.dark{color:var(--on-dark)}
+.tile:hover{transform:scale(1.08)}
+.tile[aria-pressed="true"]{outline:3px solid var(--sun);outline-offset:1px;position:relative;z-index:1}
+.legend{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--ink-soft);flex-wrap:wrap}
+.ramp{display:flex;height:10px;width:160px;border-radius:3px;overflow:hidden}
+.ramp span{flex:1}
+.detail{display:grid;grid-template-columns:auto 1fr;gap:4px 24px;border-top:1px solid var(--rule);margin-top:14px;padding-top:14px;align-items:center}
+.detail .score{font-family:var(--serif);font-size:2.6rem;font-weight:700;line-height:1;grid-row:span 2}
+.detail .cname{font-weight:600}
+.detail .meta{font-size:.85rem;color:var(--ink-soft)}
+.spark{grid-column:1/-1;width:100%;height:70px;margin-top:6px}
+
+/* pillars */
+section.band{margin-top:88px}
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--ink);margin-top:28px}
+.pillars.five{grid-template-columns:repeat(5,1fr)}
+.pillars div{padding:22px 22px 6px 0;border-right:1px solid var(--rule);padding-left:22px}
+.pillars div:first-child{padding-left:0}
+.pillars div:last-child{border-right:0}
+.pillars h3{font-size:1.25rem}
+.pillars p{font-size:.95rem;color:var(--ink-soft)}
+@media (max-width:960px){.pillars.five{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:860px){.pillars,.pillars.five{grid-template-columns:1fr 1fr}.pillars div{padding-left:0;border-right:0;border-bottom:1px solid var(--rule)}}
+@media (max-width:520px){.pillars,.pillars.five{grid-template-columns:1fr}}
+
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:28px}
+.facts dt{font-family:var(--serif);font-size:2rem;font-weight:700}
+.facts dd{margin:0;color:var(--ink-soft);font-size:.95rem}
+@media (max-width:700px){.facts{grid-template-columns:1fr}}
+
+.updates{list-style:none;padding:0;margin:20px 0 0;border-top:1px solid var(--rule)}
+.updates li{display:grid;grid-template-columns:140px 1fr;gap:20px;padding:16px 0;border-bottom:1px solid var(--rule)}
+.updates time{color:var(--ink-soft);font-size:.9rem}
+@media (max-width:560px){.updates li{grid-template-columns:1fr;gap:2px}}
+
+/* inner page layout */
+.pagehead{border-bottom:1px solid var(--rule);padding-bottom:28px;margin-bottom:40px}
+.two{display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px}
+@media (max-width:860px){.two{grid-template-columns:1fr;gap:24px}}
+.subnav{list-style:none;padding:0;margin:0;position:sticky;top:100px;align-self:start}
+.subnav a{display:block;padding:8px 0 8px 14px;border-left:2px solid var(--rule);text-decoration:none;color:var(--ink-soft);font-weight:500}
+.subnav a:hover{color:var(--ink)}
+.subnav a[aria-current="true"]{border-left-color:var(--sun);color:var(--ink)}
+@media (max-width:860px){.subnav{position:static;display:flex;gap:8px;flex-wrap:wrap}.subnav a{border-left:0;border-bottom:2px solid var(--rule);padding:6px 4px}.subnav a[aria-current="true"]{border-bottom-color:var(--sun)}}
+.prose h2{margin-top:1.6em}
+.prose h2:first-child{margin-top:0}
+.prose li{margin-bottom:.4em;max-width:66ch}
+.callout{background:var(--surface);border-left:4px solid var(--sun);padding:16px 20px;border-radius:0 8px 8px 0;margin:24px 0;max-width:68ch}
+.formula{font-family:var(--serif);font-size:1.15rem;background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:16px 20px;overflow-x:auto;max-width:68ch}
+
+/* people */
+.person{display:grid;grid-template-columns:200px minmax(0,1fr);gap:36px;padding:36px 0;border-bottom:1px solid var(--rule)}
+.person:first-of-type{padding-top:0}
+@media (max-width:620px){.person{grid-template-columns:1fr;gap:20px}}
+.portrait{width:200px;aspect-ratio:4/5;border-radius:10px;object-fit:cover;background:var(--s1)}
+.monogram{width:200px;aspect-ratio:4/5;border-radius:10px;background:linear-gradient(160deg,var(--s4),var(--s5));display:grid;place-items:center;color:#F3F5F2;font-family:var(--serif);font-size:3.4rem;font-weight:600}
+.person h3{font-size:1.7rem;margin-bottom:4px}
+.role{font-weight:600;margin:0 0 2px}
+.org{color:var(--ink-soft);margin:0 0 14px}
+.links{display:flex;gap:18px;flex-wrap:wrap;font-size:.95rem;margin-bottom:16px}
+.tag{display:inline-block;font-size:.82rem;background:var(--s1);border-radius:999px;padding:3px 12px;margin:0 6px 6px 0}
+.empty{background:var(--surface);border:1px dashed var(--rule);border-radius:10px;padding:28px;color:var(--ink-soft);max-width:68ch}
+
+/* table */
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.95rem;min-width:560px}
+th,td{text-align:left;padding:11px 16px;border-bottom:1px solid var(--rule)}
+th{font-weight:600;font-size:.88rem;color:var(--ink-soft);background:var(--paper)}
+th button{all:unset;cursor:pointer}
+th button:focus-visible{outline:3px solid var(--focus)}
+td.num{font-variant-numeric:tabular-nums}
+.bar-cell{display:flex;align-items:center;gap:10px}
+.bar-cell span{height:8px;border-radius:2px;background:var(--s4)}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.toolbar input{font:inherit;padding:9px 12px;border:1px solid var(--rule);border-radius:6px;background:var(--surface);color:var(--ink);min-width:240px}
+
+
+.dims{display:grid;gap:0;border-top:2px solid var(--ink);margin-top:20px}
+.dim{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:4px 28px;padding:20px 0;border-bottom:1px solid var(--rule)}
+.dim h3{grid-row:span 2;font-size:1.15rem;margin:0}
+.dim p{margin:0;font-size:.97rem}
+.dim .dim-meta{color:var(--ink-soft);font-size:.88rem;margin-top:6px}
+@media (max-width:620px){.dim{grid-template-columns:1fr}.dim h3{grid-row:auto}}
+.ind{margin-top:20px}
+.ind table{min-width:680px}
+.ind caption{text-align:left;padding:14px 16px 4px;font-weight:600;position:absolute;left:-9999px}
+.ind tr.grp th{background:var(--s1);color:var(--ink);font-family:var(--serif);font-size:1rem;padding-top:12px}
+.ind td{vertical-align:top}
+.ind code{font-family:var(--sans);font-weight:600;font-size:.85rem;letter-spacing:.02em}
+.dir{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;font-weight:700;font-size:.9rem;line-height:1}
+.dir.pos{background:var(--s2);color:var(--ink)}
+.dir.rev{background:color-mix(in srgb,var(--sun) 30%,transparent);color:var(--ink)}
+.note{font-size:.88rem;color:var(--ink-soft);margin-top:12px}
+.steps{max-width:66ch;padding-left:1.4em}
+.eqs{display:grid;gap:10px;margin:16px 0 20px;max-width:68ch}
+.eq{display:grid;grid-template-columns:9rem minmax(0,1fr);align-items:center;gap:16px}
+.eq .eqname{font-size:.9rem;color:var(--ink-soft)}
+.eq .formula{padding:10px 16px}
+@media (max-width:560px){.eq{grid-template-columns:1fr;gap:4px}}
+.stages{list-style:none;counter-reset:st;padding:0;margin:20px 0 0;max-width:72ch}
+.stages>li{counter-increment:st;position:relative;padding:0 0 28px 56px;border-left:2px solid var(--rule);margin-left:17px}
+.stages>li:last-child{border-left-color:transparent}
+.stages>li::before{content:counter(st);position:absolute;left:-18px;top:-4px;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-family:var(--serif);font-weight:700}
+.stages h3{font-size:1.15rem;margin-bottom:.35em}
+.stages .formula{margin-top:8px}
+
+:root{--c-system:#135A4D;--c-access:#C98F00;--c-market:#3B6EA8;--c-env:#5E9A3A;--c-inst:#8A4F7D;--cmp-bar:#C9D2CD}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--c-system:#6CBBA0;--c-access:#E9B53A;--c-market:#7FA8DA;--c-env:#9BCB72;--c-inst:#C893BC;--cmp-bar:#3A5058}}
+:root[data-theme="dark"]{--c-system:#6CBBA0;--c-access:#E9B53A;--c-market:#7FA8DA;--c-env:#9BCB72;--c-inst:#C893BC;--cmp-bar:#3A5058}
+.tile.off{color:var(--ink-soft);opacity:.55;font-weight:500}
+.legend-nd{margin-left:auto;display:inline-flex;align-items:center;gap:6px}
+.legend-nd i{width:10px;height:10px;border-radius:2px;background:var(--nodata);display:block}
+.muted,.muted-score{color:var(--ink-soft)}
+.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:24px}
+.controls label{display:flex;flex-direction:column;gap:6px;font-size:.88rem;font-weight:600;color:var(--ink-soft)}
+.controls select,.panel-head select,.toolbar select,.dl select{font:inherit;font-size:.95rem;font-weight:500;padding:9px 10px;border-radius:6px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);max-width:100%}
+@media (max-width:760px){.controls{grid-template-columns:1fr}}
+.kpis dl{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin:0 0 24px;border-top:2px solid var(--ink)}
+.kpis dl>div{padding:14px 16px 4px 0}
+.kpis dt{font-family:var(--serif);font-size:1.8rem;font-weight:700;line-height:1.1}
+.kpis dt span{font-size:1rem;font-weight:400;color:var(--ink-soft)}
+.kpis dt.sm{font-size:1.15rem;padding-top:8px}
+.kpis dd{margin:4px 0 0;font-size:.85rem;color:var(--ink-soft)}
+@media (max-width:860px){.kpis dl{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:20px 22px;margin-bottom:24px;min-width:0}
+.panel-head h2{font-size:1.25rem;margin:0 0 2px}
+.panel-head.row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.panel-sub{font-size:.88rem;color:var(--ink-soft);margin:0 0 12px}
+.chartbox{position:relative;height:300px}
+.chartbox.tall{height:340px}
+.chartbox.rankbox{height:560px}
+.dash-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+.dash-grid .panel{margin-bottom:24px}
+@media (max-width:900px){.dash-grid{grid-template-columns:1fr}}
+.dl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:28px;margin-bottom:56px}
+@media (max-width:800px){.dl{grid-template-columns:1fr;gap:24px}}
+.dl h2{font-size:1.4rem}
+.dl fieldset{border:0;padding:0;margin:0 0 20px}
+.dl legend{font-weight:600;margin-bottom:10px}
+.radio{display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:8px 0}
+.radio input{accent-color:var(--s5);width:18px;height:18px;margin:0}
+.dl select:disabled{opacity:.5}
+.dl button.btn{cursor:pointer;font:inherit;font-weight:600}
+.dl button.btn:disabled{opacity:.6;cursor:progress}
+.dl-status{font-size:.9rem;color:var(--ink-soft);margin-top:12px;min-height:1.4em}
+.dl-info{border-left:1px solid var(--rule);padding-left:32px}
+@media (max-width:800px){.dl-info{border-left:0;padding-left:0;border-top:1px solid var(--rule);padding-top:20px}}
+.dl-info h3{font-size:1.1rem}
+.dl-info ul{padding-left:1.1em;margin:0;font-size:.95rem}
+.dl-info li{margin-bottom:8px}
+.tablehead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+.tablehead h2{margin:0}
+.inline{display:flex;align-items:center;gap:8px;font-weight:500}
+#tbl{min-width:860px}
+#tbl td a{text-decoration-color:var(--rule)}
+.countries{font-size:.95rem}
+
+.lead-tag{display:inline-block;font-size:.82rem;font-weight:600;background:color-mix(in srgb,var(--sun) 28%,transparent);border-radius:999px;padding:2px 12px;margin:0 0 6px}
+.sm-controls{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;margin:4px 0 18px}
+.sm-controls label{display:flex;flex-direction:column;gap:6px;font-size:.88rem;font-weight:600;color:var(--ink-soft)}
+.sm-controls select{font:inherit;font-size:.95rem;font-weight:500;padding:9px 10px;border-radius:6px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);max-width:100%}
+.sm-controls label.check{flex-direction:row;align-items:center;gap:8px;font-weight:500;color:var(--ink);padding-bottom:10px}
+.sm-controls input[type=checkbox]{accent-color:var(--s5);width:17px;height:17px;margin:0}
+.sm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:10px}
+.sm-card{all:unset;box-sizing:border-box;display:block;cursor:pointer;border:1px solid var(--rule);border-radius:8px;padding:10px 10px 6px;background:var(--paper)}
+.sm-card:hover{border-color:var(--s3)}
+.sm-card:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sm-card[aria-pressed="true"]{border-color:var(--sun);box-shadow:inset 0 0 0 1px var(--sun)}
+.sm-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sm-name{font-weight:600;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sm-val{font-family:var(--serif);font-weight:700;font-size:1rem;font-variant-numeric:tabular-nums}
+.sm-meta{font-size:.75rem;color:var(--ink-soft);display:flex;justify-content:space-between}
+.sm-meta .up{color:var(--s4)}
+.sm-chart{position:relative;height:96px;margin-top:4px}
+.sm-legend{display:flex;gap:16px;font-size:.82rem;color:var(--ink-soft);margin:-6px 0 12px}
+.sm-legend i{display:inline-block;width:18px;height:0;border-top:2.5px solid var(--ink);vertical-align:middle;margin-right:6px}
+.sm-legend i.avg{border-top:2px dashed var(--sun)}
+
+.hm-bar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 20px;margin:8px 0 16px;padding-top:20px;border-top:2px solid var(--ink)}
+.hm-bar h2{margin:0 auto 4px 0;font-size:1.5rem}
+.hm-bar label{display:flex;flex-direction:column;gap:6px;font-size:.88rem;font-weight:600;color:var(--ink-soft)}
+.hm-bar select{font:inherit;font-size:.95rem;font-weight:500;padding:9px 10px;border-radius:6px;border:1px solid var(--rule);background:var(--surface);color:var(--ink)}
+.hm-wrap{overflow-x:auto}
+table.hm{border-collapse:separate;border-spacing:2px;width:100%;min-width:0;font-size:.8rem;font-variant-numeric:tabular-nums}
+table.hm th,table.hm td{border:0;padding:0}
+table.hm thead th{font-weight:600;color:var(--ink-soft);font-size:.74rem;text-align:center;padding:0 2px 6px;vertical-align:bottom;line-height:1.2;background:none}
+table.hm thead th.idx{color:var(--ink)}
+table.hm tbody th{font-weight:500;text-align:right;padding-right:8px;white-space:nowrap;font-size:.8rem;color:var(--ink)}
+table.hm td{text-align:center;height:24px;min-width:44px;border-radius:2px}
+table.hm td.gap,table.hm th.gap{min-width:6px;width:6px;background:none}
+table.hm tbody tr.row{cursor:pointer}
+table.hm tbody tr.row:hover th{text-decoration:underline}
+table.hm tbody tr.sel th{font-weight:700}
+table.hm tbody tr.sel th::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--sun);margin-right:6px;vertical-align:middle}
+table.hm tbody tr.grp th{text-align:left;font-family:var(--serif);font-weight:600;font-size:.92rem;padding:10px 0 4px;color:var(--ink)}
+table.hm tbody tr.grp th span{font-family:var(--sans);font-weight:400;font-size:.78rem;color:var(--ink-soft);margin-left:6px}
+table.hm tbody tr.grp:first-child th{padding-top:0}
+table.hm.big{width:auto}
+table.hm.big td{height:40px;font-size:.88rem;min-width:50px;padding:0 4px}
+table.hm.big td.gap{min-width:6px;padding:0}
+table.hm.big tbody th{font-size:.9rem}
+table.hm.years td{min-width:42px;height:34px;font-size:.76rem}
+table.hm.years thead th{font-size:.68rem}
+.hm-scale{display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--ink-soft);margin-top:14px}
+.hm-ramp{flex:0 1 220px;height:10px;border-radius:3px;background:linear-gradient(90deg,#F4F8F6,#CFE3D9,#8FC0AA,#4E9781,#1F6B5B,#0B3F36)}
+.dim h3 small{display:block;font-family:var(--sans);font-weight:500;font-size:.85rem;color:var(--ink-soft);margin-top:4px;line-height:1.35}
+.ind tr.grp th span{font-family:var(--sans);font-weight:400;font-size:.85rem;color:var(--ink-soft);margin-left:6px}
+table.inc{min-width:0}
+table.inc td{vertical-align:top}
+.sr{position:absolute;left:-9999px}
+.dimkey b{font-weight:600;color:var(--ink)}
+.dimkey.boxed{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--sun);border-radius:0 8px 8px 0;padding:12px 16px;font-size:.92rem;max-width:none;margin:0 0 24px}
+.dimkey.boxed span{display:block;font-weight:600;font-size:.82rem;color:var(--ink-soft);margin-bottom:2px}
+footer{border-top:1px solid var(--rule);padding:40px 0;font-size:.9rem;color:var(--ink-soft)}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.load .tile{animation:fill .5s ease both}
+@keyframes fill{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap bar">
+    <a class="brand" href="#home" aria-label="Africa Energy Security Index, home">
+      <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true">
+        <rect x="1" y="1" width="11" height="11" rx="2.5" fill="var(--s2)"/><rect x="13.5" y="1" width="11" height="11" rx="2.5" fill="var(--s3)"/>
+        <rect x="1" y="13.5" width="11" height="11" rx="2.5" fill="var(--s3)"/><rect x="13.5" y="13.5" width="11" height="11" rx="2.5" fill="var(--s4)"/><rect x="26" y="13.5" width="11" height="11" rx="2.5" fill="var(--sun)"/>
+        <rect x="13.5" y="26" width="11" height="11" rx="2.5" fill="var(--s5)"/>
+      </svg>
+      <span><b>Africa Energy Security Index</b><small>Sub-Saharan Africa, 2005&ndash;2023</small></span>
+    </a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="mainnav">Menu</button>
+    <nav class="main" id="mainnav" aria-label="Main">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#data">Index data</a></li>
+        <li><a href="#methodology">Methodology</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#about">About us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- HOME -->
+<section class="page" id="page-home">
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <span class="notice"><i></i>27 African countries, 2005&ndash;2023</span>
+        <h1>How secure is energy across Africa?</h1>
+        <p class="lede">The Africa Energy Security Index tracks whether households, firms and governments can count on reliable, accessible and affordable energy, measured the same way for every country across five dimensions. It covers 27 Sub-Saharan African countries from 2005 to 2023.</p>
+        <div class="btns">
+          <a class="btn primary" href="#dashboard">Open the dashboard</a>
+          <a class="btn" href="#data">Download the data</a>
+        </div>
+        <dl class="facts">
+          <div><dt>27</dt><dd>African countries covered</dd></div>
+          <div><dt>5</dt><dd>dimensions of energy security</dd></div>
+          <div><dt>19</dt><dd>years of data, 2005 to 2023</dd></div>
+        </dl>
+      </div>
+
+      <div class="mapcard" aria-labelledby="maptitle">
+        <div class="maphead">
+          <h2 id="maptitle">Energy Security Index by country</h2>
+          <select id="year" aria-label="Year"></select>
+        </div>
+        <div class="legend">
+          <span>Less secure</span><span class="ramp"><span style="background:var(--s1)"></span><span style="background:var(--s2)"></span><span style="background:var(--s3)"></span><span style="background:var(--s4)"></span><span style="background:var(--s5)"></span></span><span>More secure</span>
+        </div>
+        <div class="tiles load" id="tiles" role="group" aria-label="Tile map of African countries; select a country for details"></div>
+        <div class="detail" id="detail" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <section class="band" aria-labelledby="dims">
+      <h2 id="dims">What the index measures</h2>
+      <p>Energy security is more than having enough supply. The five dimensions are energy system adequacy (<b>System</b>), access and affordability (<b>Access</b>), market and external vulnerability (<b>Market</b>), environmental sustainability (<b>Environment</b>), and the political-institutional environment (<b>Institutions</b>). The index combines 21 indicators across these five dimensions so that a country's score reflects the whole picture, from generation capacity to what a household pays for electricity.</p>
+      <div class="pillars five">
+        <div><h3>System</h3><p>Whether the energy system reliably delivers energy, including grid losses and energy intensity.</p></div>
+        <div><h3>Access</h3><p>Electricity and clean cooking access, and electricity use per person.</p></div>
+        <div><h3>Market</h3><p>Import and fossil-fuel dependence, and exposure to world oil price shocks.</p></div>
+        <div><h3>Environment</h3><p>Emissions, emissions intensity and the share of renewables.</p></div>
+        <div><h3>Institutions</h3><p>Political stability, government effectiveness, rule of law and control of corruption.</p></div>
+      </div>
+      <p style="margin-top:20px"><a href="#methodology">See every indicator and how the index is built</a></p>
+    </section>
+
+    <section class="band" aria-labelledby="news">
+      <h2 id="news">Updates</h2>
+      <ul class="updates">
+        <li><time datetime="2026-10">October 2026</time><span>The index and its five dimensions for 27 Sub-Saharan African countries, 2005 to 2023, with an interactive dashboard and Excel downloads.</span></li>
+      </ul>
+    </section>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="page" id="page-dashboard">
+  <div class="wrap">
+    <div class="pagehead">
+      <h1>Dashboard</h1>
+      <p class="lede">Choose a country and an index to see how it has changed since 2005, compare all 27 countries at once, and explore the five dimensions through heat maps by country and income group.</p>
+    </div>
+
+    <p class="dimkey boxed"><span>Dimension names</span>Energy system adequacy (<b>System</b>), access and affordability (<b>Access</b>), market and external vulnerability (<b>Market</b>), environmental sustainability (<b>Environment</b>), and the political-institutional environment (<b>Institutions</b>).</p>
+
+    <div class="controls" role="group" aria-label="Chart settings">
+      <label>Country<select id="d-country"></select></label>
+      <label>Index or indicator<select id="d-var"></select></label>
+      <label>Compare with<select id="d-cmp"></select></label>
+    </div>
+
+    <div class="kpis" id="kpis" aria-live="polite"></div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2 id="ts-title">Over time</h2>
+        <p class="panel-sub" id="ts-sub"></p>
+      </div>
+      <div class="chartbox tall"><canvas id="ts-chart" role="img" aria-label="Line chart of the selected index over time"></canvas></div>
+    </div>
+
+    <div class="panel" id="sm-panel">
+      <div class="panel-head">
+        <h2 id="sm-title">All 27 countries</h2>
+        <p class="panel-sub" id="sm-sub"></p>
+      </div>
+      <div class="sm-controls" role="group" aria-label="Settings for the country grid">
+        <label>Index or indicator<select id="sm-var"></select></label>
+        <label>Order<select id="sm-sort">
+          <option value="name">Alphabetical</option>
+          <option value="last">Highest in 2023 first</option>
+          <option value="change">Largest gain since 2005 first</option>
+          <option value="income">By income group</option>
+        </select></label>
+        <label class="check"><input type="checkbox" id="sm-avg" checked> Show panel average</label>
+        <label class="check"><input type="checkbox" id="sm-shared" checked> Same scale for all countries</label>
+      </div>
+      <div class="sm-grid" id="sm-grid"></div>
+      <p class="note">Each chart shows one country from 2005 to 2023. Select a chart to make that country the focus of the rest of the dashboard.</p>
+    </div>
+
+    <div class="hm-bar" role="group" aria-label="Heat map settings">
+      <h2>Heat maps</h2>
+      <label>Values for<select id="hm-period"></select></label>
+      <label>Sort countries by<select id="hm-sort"></select></label>
+    </div>
+
+    <div class="dash-grid">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Dimension indices by country</h2>
+          <p class="panel-sub" id="hm1-sub"></p>
+        </div>
+        <div class="hm-wrap" id="hm1"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Dimension indices by income group</h2>
+          <p class="panel-sub" id="hm2-sub"></p>
+        </div>
+        <div class="hm-wrap" id="hm2"></div>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Income group averages</h2>
+          <p class="panel-sub" id="hm3-sub"></p>
+        </div>
+        <div class="hm-wrap" id="hm3"></div>
+        <div class="hm-scale" aria-hidden="true"><span>0, least secure</span><span class="hm-ramp"></span><span>1, most secure</span></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head row">
+          <div><h2>Dimension profile</h2><p class="panel-sub" id="prof-sub"></p></div>
+          <select id="d-year-prof" aria-label="Year for dimension profile"></select>
+        </div>
+        <div class="chartbox"><canvas id="prof-chart" role="img" aria-label="Bar chart of the five dimension indices"></canvas></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2 id="hm4-title">Dimensions over time</h2>
+        <p class="panel-sub" id="hm4-sub"></p>
+      </div>
+      <div class="hm-wrap" id="hm4"></div>
+    </div>
+    <p class="note">The composite index and the five dimensions run from 0 (least secure) to 1 (most secure), relative to the 27 countries and 19 years in the panel. Governance indicators are World Bank estimates on a scale of roughly &minus;2.5 to 2.5. <a href="#data">Download the data</a>.</p>
+  </div>
+</section>
+
+<!-- DATA -->
+<section class="page" id="page-data">
+  <div class="wrap">
+    <div class="pagehead">
+      <h1>Index data</h1>
+      <p class="lede">Download the Energy Security Index, its five dimension indices and the governance indicators as an Excel workbook, for one country or the whole panel.</p>
+    </div>
+
+    <div class="dl">
+      <div>
+        <h2>Download as Excel</h2>
+        <fieldset>
+          <legend>What to download</legend>
+          <label class="radio"><input type="radio" name="scope" value="all" checked> Entire panel <span class="muted">(27 countries, 2005&ndash;2023, 513 rows)</span></label>
+          <label class="radio"><input type="radio" name="scope" value="one"> One country
+            <select id="dl-country" aria-label="Country to download" disabled></select></label>
+        </fieldset>
+        <button class="btn primary" id="dl-btn" type="button">Download Excel file</button>
+        <p class="dl-status" id="dl-status" role="status"></p>
+      </div>
+      <div class="dl-info">
+        <h3>What's in the workbook</h3>
+        <ul>
+          <li><strong>Data:</strong> one row per country and year with the composite index, its softmax robustness version, the yearly rank, the five dimension indices and the four governance indicators.</li>
+          <li><strong>Variables:</strong> the name, definition and scale of every column.</li>
+          <li><strong>Notes:</strong> the source and how to cite the index.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tablehead">
+      <h2>Scores by year</h2>
+      <div class="toolbar">
+        <input type="search" id="filter" placeholder="Find a country" aria-label="Find a country">
+        <label class="inline">Year <select id="t-year"></select></label>
+      </div>
+    </div>
+    <div class="tablewrap">
+      <table id="tbl">
+        <thead><tr>
+          <th><button data-k="rank">Rank</button></th>
+          <th><button data-k="name">Country</button></th>
+          <th><button data-k="income">Income group</button></th>
+          <th><button data-k="esi">Index</button></th>
+          <th><button data-k="system">System</button></th>
+          <th><button data-k="access">Access</button></th>
+          <th><button data-k="market">Market</button></th>
+          <th><button data-k="env">Environment</button></th>
+          <th><button data-k="inst">Institutions</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="note">Index: composite Energy Security Index (main specification). Rank 1 is the most secure country in that year. Income groups follow the World Bank FY2018 classification. Select a column heading to sort.</p>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="page" id="page-methodology">
+  <div class="wrap">
+    <div class="pagehead">
+      <h1>Methodology</h1>
+      <p class="lede">How the index is built: five dimensions, 21 indicators from World Bank sources, and a two-stage principal component analysis that turns them into one score between 0 and 1 for each country and year.</p>
+    </div>
+    <div class="two">
+      <ul class="subnav" aria-label="On this page">
+        <li><a href="#methodology" data-jump="m-concept">Concept</a></li>
+        <li><a href="#methodology" data-jump="m-framework">Five dimensions</a></li>
+        <li><a href="#methodology" data-jump="m-indicators">Indicators</a></li>
+        <li><a href="#methodology" data-jump="m-data">Data and preparation</a></li>
+        <li><a href="#methodology" data-jump="m-norm">Normalisation</a></li>
+        <li><a href="#methodology" data-jump="m-construct">Building the index</a></li>
+        <li><a href="#methodology" data-jump="m-read">Reading the scores</a></li>
+        <li><a href="#methodology" data-jump="m-cover">Country coverage</a></li>
+      </ul>
+      <div class="prose">
+
+        <h2 id="m-concept">Concept</h2>
+        <p>Energy security is commonly organised around the "4 As": availability, accessibility, affordability and acceptability. The framework is simple, but a growing body of research questions how well it works for risk-based, system-level analysis, particularly in emerging and developing economies.</p>
+        <p>Four lines of critique shape the design of this index. First, energy security is multidimensional and context-specific, so a fixed checklist of attributes cannot capture it fully. Second, attribute-based frameworks are static: they say little about how well an energy system actually delivers, or about the institutional and socioeconomic conditions it operates in. Third, energy security can be seen as a systemic risk condition in which policy goals often conflict, for example when expanding rural energy access works against emissions reduction. Fourth, energy security is increasingly measured as exposure to risk rather than as the presence of particular attributes.</p>
+        <p>Two weaknesses of the 4 As matter especially here. "Acceptability" is normatively defined and hard to measure, and the framework largely leaves out the political and institutional conditions that reliable supply and long-term investment depend on. The index therefore uses a risk-based, five-dimension structure suited to the structural and persistent energy challenges of Sub-Saharan Africa. It keeps environmental sustainability and institutions as separate dimensions, so each can be tracked on its own.</p>
+
+        <h2 id="m-framework">Five dimensions</h2>
+        <p class="dimkey">The index has five dimensions: energy system adequacy (<b>System</b>), access and affordability (<b>Access</b>), market and external vulnerability (<b>Market</b>), environmental sustainability (<b>Environment</b>), and the political-institutional environment (<b>Institutions</b>). The short names in brackets are used throughout this website, including in the dashboard and data downloads.</p>
+        <div class="dims">
+          <article class="dim">
+            <h3>System<small>Energy system adequacy, reliability and efficiency</small></h3>
+            <p>Generation capacity, transmission losses and per capita energy consumption, capturing the physical adequacy and reliability of supply.</p>
+            <p class="dim-meta">3 indicators</p>
+          </article>
+          <article class="dim">
+            <h3>Access<small>Energy access and affordability</small></h3>
+            <p>Household access to electricity and clean cooking fuels, together with consumption intensity, capturing affordability and availability.</p>
+            <p class="dim-meta">3 indicators</p>
+          </article>
+          <article class="dim">
+            <h3>Market<small>Energy market and external vulnerability</small></h3>
+            <p>Trade openness, fossil-fuel dependence, and exposure to global oil-price and supply shocks.</p>
+            <p class="dim-meta">7 indicators</p>
+          </article>
+          <article class="dim">
+            <h3>Environment<small>Environmental sustainability and transition readiness</small></h3>
+            <p>CO&#8322; emissions and the share of renewable energy in total energy and electricity supply.</p>
+            <p class="dim-meta">6 indicators</p>
+          </article>
+          <article class="dim">
+            <h3>Institutions<small>Political, institutional and socioeconomic environment</small></h3>
+            <p>Political stability, government effectiveness, rule of law and control of corruption.</p>
+            <p class="dim-meta">4 indicators</p>
+          </article>
+        </div>
+
+        <h2 id="m-indicators">Indicators</h2>
+        <p>Each dimension is measured by three to seven indicators. Indicators marked <span class="dir rev" aria-hidden="true">&minus;</span> describe vulnerability or environmental harm and are reversed (multiplied by &minus;1) before standardisation, so that within every dimension a higher value always means more secure. Indicators marked <span class="dir pos" aria-hidden="true">+</span> enter as they are.</p>
+
+        <div class="tablewrap ind">
+          <table>
+            <caption>Indicators by dimension</caption>
+            <thead><tr><th scope="col">Code</th><th scope="col">Indicator</th><th scope="col">Unit</th><th scope="col">Source</th><th scope="col"><abbr title="Direction">Dir.</abbr></th></tr></thead>
+            <tbody>
+              <tr class="grp"><th colspan="5" scope="rowgroup">System <span>Energy system adequacy, reliability and efficiency</span></th></tr>
+              <tr><td><code>EPC</code></td><td>Electric power consumption per capita</td><td>kWh per person</td><td>WDI</td><td><span class="dir pos" title="Entered as is">+</span></td></tr>
+              <tr><td><code>EPTDLOSS</code></td><td>Electric power transmission and distribution losses</td><td>% of output</td><td>WDI</td><td><span class="dir rev" title="Reversed">&minus;</span></td></tr>
+              <tr><td><code>ENUSE</code></td><td>Energy use per capita</td><td>kg of oil equivalent per person</td><td>WDI</td><td><span class="dir rev" title="Reversed">&minus;</span></td></tr>
+
+              <tr class="grp"><th colspan="5" scope="rowgroup">Access <span>Energy access and affordability</span></th></tr>
+              <tr><td><code>ACCOOKTECH</code></td><td>Access to clean cooking fuels and technology</td><td>% of population</td><td>WDI</td><td><span class="dir pos" title="Entered as is">+</span></td></tr>
+              <tr><td><code>ACCELECT</code></td><td>Access to electricity</td><td>% of population</td><td>WDI</td><td><span class="dir pos" title="Entered as is">+</span></td></tr>
+              <tr><td><code>EPC</code></td><td>Electric power consumption per capita (shared with System)</td><td>kWh per person</td><td>WDI</td><td><span class="dir pos" title="Entered as is">+</span></td></tr>
+
+              <tr class="grp"><th colspan="5" scope="rowgroup">Market <span>Energy market and external vulnerability</span></th></tr>
+              <tr><td><code>TOPEN</code></td><td>Trade openness: imports of goods and services</td><td>% of GDP</td><td>WDI</td><td><span class="dir rev" title="Reversed">&minus;</span></td></tr>
+              <tr><td><code>FFDEP</code></td><td>Fossil-fuel dependence: fossil fuel energy consumption divided by total energy use</td><td>Ratio</td><td>Constructed from WDI</td><td><span class="dir rev" title="Reversed">&minus;</span></td></tr>
+              <tr><td><code>TRADEXPO</code></td><td>Trade exposure to oil shocks: Brent crude price &times; trade openness</td><td>US$ per barrel &times; share</td><td>Constructed from WDI and Pink Sheet</td><td><span class="dir rev" title="Reversed">&minus;</span></td></tr>
+              <tr><td><code>GLOSHOK</code></td><td>Global oil-shock exposure: Brent crude price &times; fuel-import share</td><td>US$ per barrel &times; share</td><td>Constructed from WDI and Pink Sheet</td><td><span class="dir rev" title="Reversed">&minus;</span></td></tr>
+              <tr><td><code>ENUSE</code></td><td>Energy use per capita (shared with System)</td><td>kg of oil equivalent per person</td><td>WDI</td><td><span class="dir rev" title="Reversed">&minus;</span></td></tr>
+              <tr><td><code>FFEC</code></td><td>Fossil fuel energy consumption</td><td>% of total energy</td><td>WDI</td><td><span class="dir rev" title="Reversed">&minus;</span></td></tr>
+              <tr><td><code>FUELIM</code></td><td>Fuel imports</td><td>% of merchandise imports</td><td>WDI</td><td><span class="dir rev" title="Reversed">&minus;</span></td></tr>
+
+              <tr class="grp"><th colspan="5" scope="rowgroup">Environment <span>Environmental sustainability and transition readiness</span></th></tr>
+              <tr><td><code>CO2</code></td><td>CO&#8322; emissions, total</td><td>Kilotons</td><td>WDI</td><td><span class="dir rev" title="Reversed">&minus;</span></td></tr>
+              <tr><td><code>CO2MT</code></td><td>CO&#8322; emissions per capita</td><td>Metric tons per person</td><td>WDI</td><td><span class="dir rev" title="Reversed">&minus;</span></td></tr>
+              <tr><td><code>CO2INT</code></td><td>CO&#8322; intensity: emissions divided by GDP</td><td>kt CO&#8322; per constant US$ of GDP</td><td>Constructed from WDI</td><td><span class="dir rev" title="Reversed">&minus;</span></td></tr>
+              <tr><td><code>REC</code></td><td>Renewable energy consumption</td><td>% of total final energy consumption</td><td>WDI</td><td><span class="dir pos" title="Entered as is">+</span></td></tr>
+              <tr><td><code>REO</code></td><td>Renewable electricity output</td><td>% of total electricity output</td><td>WDI</td><td><span class="dir pos" title="Entered as is">+</span></td></tr>
+              <tr><td><code>EPREN</code></td><td>Renewable electricity share</td><td>% of total</td><td>WDI</td><td><span class="dir pos" title="Entered as is">+</span></td></tr>
+
+              <tr class="grp"><th colspan="5" scope="rowgroup">Institutions <span>Political, institutional and socioeconomic environment</span></th></tr>
+              <tr><td><code>POLSTAB</code></td><td>Political stability and absence of violence or terrorism</td><td>Score, &minus;2.5 to 2.5</td><td>WGI</td><td><span class="dir pos" title="Entered as is">+</span></td></tr>
+              <tr><td><code>GE</code></td><td>Government effectiveness</td><td>Score, &minus;2.5 to 2.5</td><td>WGI</td><td><span class="dir pos" title="Entered as is">+</span></td></tr>
+              <tr><td><code>RLAW</code></td><td>Rule of law</td><td>Score, &minus;2.5 to 2.5</td><td>WGI</td><td><span class="dir pos" title="Entered as is">+</span></td></tr>
+              <tr><td><code>CORRUPT</code></td><td>Control of corruption</td><td>Score, &minus;2.5 to 2.5</td><td>WGI</td><td><span class="dir pos" title="Entered as is">+</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">WDI: World Bank World Development Indicators. WGI: World Bank Worldwide Governance Indicators. Pink Sheet: World Bank Commodity Markets data, Brent crude oil spot price. Two indicators are used in two dimensions by design: electric power consumption per capita (System and Access) and energy use per capita (System and Market), because each says something about both. This also means the dimension indices are not fully independent of one another by construction.</p>
+
+        <h2 id="m-data">Data and preparation</h2>
+        <p>All indicators come from three free, standardised World Bank sources that are updated every year: the World Development Indicators for energy, emissions, trade and macroeconomic series; the Worldwide Governance Indicators for the four governance measures; and the Commodity Markets "Pink Sheet" for the Brent crude oil price. The oil price is not country-specific, so it is combined with each country's trade openness and fuel-import share to build the two oil-shock exposure measures.</p>
+        <p>Panels were built dimension by dimension: for each dimension, the relevant series were extracted for all candidate countries and merged into a country-year panel. Gaps in the raw data are filled using the least invasive method that works, in this order:</p>
+        <ol class="steps">
+          <li>Linear interpolation within a country for gaps between observed years.</li>
+          <li>A three-year centred moving average for remaining short gaps.</li>
+          <li>Forward filling for gaps at the end of a series.</li>
+          <li>Backward filling, then the country mean and, only where necessary, the sample mean.</li>
+        </ol>
+        <p>This keeps country-years in the panel rather than dropping them because one indicator is missing. A country is excluded only when a whole dimension cannot be computed for it.</p>
+
+        <h2 id="m-norm">Normalisation</h2>
+        <p>Indicators are measured in very different units, from kilowatt-hours per person to governance scores between &minus;2.5 and 2.5, so they are placed on a common scale before they are combined. Two steps are applied to every indicator. First, indicators that move in the less secure direction (transmission losses, fossil-fuel dependence, emissions and import exposure) are multiplied by &minus;1, so that a higher value always means greater security. Second, each indicator is standardised. Three techniques are applied in parallel: the z-score is the main specification, and min&ndash;max and softmax are robustness checks.</p>
+        <div class="eqs">
+          <div class="eq"><span class="eqname">Z-score (main)</span><span class="formula">Z<sub>i</sub> = (X<sub>i</sub> &minus; X&#772;) / &sigma;</span></div>
+          <div class="eq"><span class="eqname">Min&ndash;max</span><span class="formula">mmx<sub>i</sub> = (X<sub>i</sub> &minus; X<sub>min</sub>) / (X<sub>max</sub> &minus; X<sub>min</sub>)</span></div>
+          <div class="eq"><span class="eqname">Softmax</span><span class="formula">s<sub>i</sub> = 1 / (1 + e<sup>&minus;V<sub>i</sub></sup>), &nbsp; V<sub>i</sub> = (X<sub>i</sub> &minus; X&#772;) / &sigma;</span></div>
+        </div>
+        <p>Softmax compresses the pull of extreme values without removing them, which matters for indicators such as total emissions and oil-shock exposure that are highly skewed across countries. Outliers are handled through the choice of normalisation technique itself, with no further transformation. Z-score and min&ndash;max are the conventional choices and allow comparison with earlier studies; softmax tests whether conclusions are driven by a few outlying country-years. Softmax is applied within each country's own time series.</p>
+
+        <h2 id="m-construct">Building the index</h2>
+        <p>Rather than putting every indicator into a single principal component analysis (PCA), the index is built in two stages. This makes it possible to see which dimensions drive a country's overall score.</p>
+        <ol class="stages">
+          <li>
+            <h3>Stage 1: one index per dimension</h3>
+            <p>For each of the five dimensions, PCA is run on that dimension's standardised indicators. The first principal component, which captures the largest share of their common variation, becomes the dimension index. Before each PCA, the Kaiser&ndash;Meyer&ndash;Olkin measure and Bartlett's test of sphericity check that the indicators are correlated enough for PCA to be appropriate.</p>
+            <div class="formula">z<sub>k</sub> = &alpha;<sub>k</sub><sup>&#8868;</sup>X, &nbsp; Var(z<sub>k</sub>) = &lambda;<sub>k</sub>, &nbsp; k = 1, &hellip;, K</div>
+          </li>
+          <li>
+            <h3>Rescale each dimension to 0&ndash;1</h3>
+            <p>Each dimension index is rescaled with min&ndash;max so that 0 is the least secure and 1 the most secure observation on that dimension.</p>
+          </li>
+          <li>
+            <h3>Stage 2: combine the five dimensions</h3>
+            <p>A second PCA is run on the five dimension indices. Its first principal component is the composite Energy Security Index, and its loadings act as data-driven weights for each dimension.</p>
+            <div class="formula">ESI = a<sub>1</sub>&middot;System + a<sub>2</sub>&middot;Access + a<sub>3</sub>&middot;Market + a<sub>4</sub>&middot;Environment + a<sub>5</sub>&middot;Institutions</div>
+          </li>
+          <li>
+            <h3>Rescale and rank</h3>
+            <p>The composite is rescaled to 0&ndash;1 and countries are ranked by it.</p>
+          </li>
+        </ol>
+
+        <h2 id="m-read">Reading the scores</h2>
+        <p>Every published score, both the composite and the five dimension indices, runs from 0 to 1. Values closer to 1 mean greater energy security; values closer to 0 mean less. Because each dimension is reported alongside the composite, two countries with similar overall scores can be compared on how they reach them.</p>
+        <p>Scores are relative to the countries and years in the panel, so they show a country's position and trajectory compared with its peers rather than an absolute threshold of security.</p>
+
+        <h2 id="m-cover">Country coverage</h2>
+        <p>The index covers 27 Sub-Saharan African countries observed every year from 2005 to 2023, a balanced panel of 513 country-year observations. The World Bank classifies 48 countries as Sub-Saharan Africa, so the index covers 56% of the region's economies.</p>
+        <p class="countries">Angola, Benin, Botswana, Burkina Faso, Cameroon, Congo (Dem. Rep.), Congo (Rep.), C&ocirc;te d'Ivoire, Eswatini, Ethiopia, Gabon, Ghana, Kenya, Madagascar, Mauritius, Mozambique, Namibia, Niger, Nigeria, Rwanda, Senegal, South Africa, Sudan, Tanzania, Togo, Uganda and Zimbabwe.</p>
+        <p>Countries were selected on data availability rather than by a predetermined sampling design. A country is included only if the World Development Indicators and Worldwide Governance Indicators provide continuous enough coverage of every indicator in all five dimensions over 2005&ndash;2023. Most of the countries left out are small island states, fragile and conflict-affected states whose statistical systems were disrupted for long periods, and other countries with sparse data over this period.</p>
+        <p>The 27 countries still span net energy exporters, diversified middle-income economies and energy-poor, import-dependent economies, so the index captures the wide range of energy security situations in the region.</p>
+        <div class="tablewrap" style="max-width:68ch">
+          <table class="inc">
+            <caption class="sr">Countries by World Bank income group, FY2018</caption>
+            <thead><tr><th scope="col">Income group (World Bank, FY2018)</th><th scope="col">Countries</th><th scope="col">N</th></tr></thead>
+            <tbody>
+              <tr><td>Upper-middle income</td><td>Botswana, Gabon, Mauritius, Namibia, South Africa</td><td class="num">5</td></tr>
+              <tr><td>Lower-middle income</td><td>Angola, Cameroon, Congo (Rep.), C&ocirc;te d'Ivoire, Eswatini, Ghana, Kenya, Nigeria, Sudan</td><td class="num">9</td></tr>
+              <tr><td>Low income</td><td>Benin, Burkina Faso, Congo (Dem. Rep.), Ethiopia, Madagascar, Mozambique, Niger, Rwanda, Senegal, Tanzania, Togo, Uganda, Zimbabwe</td><td class="num">13</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section class="page" id="page-research">
+  <div class="wrap">
+    <div class="pagehead">
+      <h1>Research and applications</h1>
+      <p class="lede">Papers, policy briefs and media coverage that build on the index.</p>
+    </div>
+    <div class="two">
+      <ul class="subnav" aria-label="On this page">
+        <li><a href="#research" data-jump="r-papers">Papers</a></li>
+        <li><a href="#research" data-jump="r-cite">How to cite</a></li>
+      </ul>
+      <div class="prose">
+        <h2 id="r-papers">Papers using the index</h2>
+        <div class="empty">Publications will be listed here as they appear. If you have used the index in your research, write to the research directors and we will add your work.</div>
+        <h2 id="r-cite">How to cite</h2>
+        <p>Please cite the index as:</p>
+        <div class="formula" style="font-size:1rem">Ho, S.-Y. and Musa, D. C. (2026). <em>Africa Energy Security Index</em>. University of South Africa.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="page" id="page-about">
+  <div class="wrap">
+    <div class="pagehead">
+      <h1>About us</h1>
+      <p class="lede">The index is an independent research project based at the University of South Africa.</p>
+    </div>
+    <div class="two">
+      <ul class="subnav" aria-label="About sections">
+        <li><a href="#about" data-jump="a-directors">Research directors</a></li>
+        <li><a href="#about" data-jump="a-team">Research team</a></li>
+        <li><a href="#about" data-jump="a-partners">Partners and funders</a></li>
+      </ul>
+      <div>
+        <h2 id="a-directors">Research directors</h2>
+
+        <article class="person">
+          <div class="monogram" role="img" aria-label="Sin-Yu Ho">SH</div>
+          <div>
+            <h3>Prof. Sin-Yu Ho</h3>
+            <p class="role">Associate Professor, Department of Economics</p>
+            <p class="lead-tag">Project lead</p>
+            <p class="org">School of Economic and Financial Sciences, College of Economic and Management Sciences, University of South Africa</p>
+            <div class="links"><a href="mailto:email@unisa.ac.za">email@unisa.ac.za</a><a href="#about">Website</a></div>
+            <p>Sin-Yu Ho is an Associate Professor in the Department of Economics, School of Economic and Financial Sciences, in the College of Economic and Management Sciences at the University of South Africa. She leads the Africa Energy Security Index.</p>
+          </div>
+        </article>
+
+        <article class="person">
+          <img class="portrait" src="data:image/jpeg;base64,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" alt="Portrait of Dasauki C. Musa">
+          <div>
+            <h3>Dasauki C. Musa</h3>
+            <p class="role">Postdoctoral Research Fellow</p>
+            <p class="org">University of South Africa</p>
+            <div class="links"><a href="mailto:email@unisa.ac.za">email@unisa.ac.za</a><a href="#about">Website</a></div>
+            <p>Dasauki C. Musa is a Postdoctoral Research Fellow at the University of South Africa. His research interests are in energy economics. He is co-director of the Africa Energy Security Index.</p>
+            <span class="tag">Energy economics</span>
+          </div>
+        </article>
+
+
+        <h2 id="a-team" style="margin-top:56px">Research team</h2>
+        <div class="empty">Research assistants and collaborators will be listed here.</div>
+
+        <h2 id="a-partners" style="margin-top:56px">Partners and funders</h2>
+        <div class="empty">Institutional partners and funders will be acknowledged here.</div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 Africa Energy Security Index. Sin-Yu Ho and Dasauki C. Musa, University of South Africa.</span>
+    <span><a href="#about">Contact the research directors</a></span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+// ===== Data =====
+const D = {"years":[2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023],"countries":[{"iso":"AGO","name":"Angola","income":"Lower-middle income"},{"iso":"BEN","name":"Benin","income":"Low income"},{"iso":"BWA","name":"Botswana","income":"Upper-middle income"},{"iso":"BFA","name":"Burkina Faso","income":"Low income"},{"iso":"CMR","name":"Cameroon","income":"Lower-middle income"},{"iso":"COD","name":"Congo, Dem. Rep.","income":"Low income"},{"iso":"COG","name":"Congo, Rep.","income":"Lower-middle income"},{"iso":"CIV","name":"Côte d'Ivoire","income":"Lower-middle income"},{"iso":"SWZ","name":"Eswatini","income":"Lower-middle income"},{"iso":"ETH","name":"Ethiopia","income":"Low income"},{"iso":"GAB","name":"Gabon","income":"Upper-middle income"},{"iso":"GHA","name":"Ghana","income":"Lower-middle income"},{"iso":"KEN","name":"Kenya","income":"Lower-middle income"},{"iso":"MDG","name":"Madagascar","income":"Low income"},{"iso":"MUS","name":"Mauritius","income":"Upper-middle income"},{"iso":"MOZ","name":"Mozambique","income":"Low income"},{"iso":"NAM","name":"Namibia","income":"Upper-middle income"},{"iso":"NER","name":"Niger","income":"Low income"},{"iso":"NGA","name":"Nigeria","income":"Lower-middle income"},{"iso":"RWA","name":"Rwanda","income":"Low income"},{"iso":"SEN","name":"Senegal","income":"Low income"},{"iso":"ZAF","name":"South Africa","income":"Upper-middle income"},{"iso":"SDN","name":"Sudan","income":"Lower-middle income"},{"iso":"TZA","name":"Tanzania","income":"Low income"},{"iso":"TGO","name":"Togo","income":"Low income"},{"iso":"UGA","name":"Uganda","income":"Low income"},{"iso":"ZWE","name":"Zimbabwe","income":"Low income"}],"values":{"AGO":{"esi":[0.3804,0.3841,0.4011,0.4094,0.4125,0.4186,0.4307,0.4433,0.467,0.4685,0.4551,0.4281,0.3949,0.3964,0.394,0.4114,0.3928,0.3998,0.3999],"esi_sm":[0.1274,0.14,0.1875,0.2145,0.2211,0.2429,0.2748,0.3211,0.3429,0.3937,0.4714,0.5431,0.6218,0.5884,0.5724,0.5408,0.5496,0.6109,0.6282],"system":[0.6211,0.6204,0.6304,0.6394,0.6503,0.65,0.6541,0.6596,0.6719,0.6737,0.6726,0.672,0.6429,0.6526,0.6501,0.6779,0.6653,0.6872,0.7013],"access":[0.2404,0.251,0.266,0.2734,0.2742,0.2717,0.2804,0.2886,0.291,0.2997,0.308,0.3236,0.332,0.3409,0.3515,0.3571,0.361,0.3656,0.368],"market":[0.7856,0.7831,0.8055,0.7819,0.7428,0.7705,0.8319,0.8812,0.9535,0.907,0.7939,0.6266,0.4931,0.4572,0.4451,0.4471,0.3538,0.3139,0.2757],"env":[0.8722,0.8679,0.8596,0.8465,0.8366,0.8294,0.8355,0.8313,0.8193,0.8009,0.7945,0.7983,0.8072,0.804,0.8127,0.7986,0.8014,0.7967,0.7963],"inst":[0.2018,0.2039,0.2214,0.2393,0.2548,0.2514,0.2496,0.2411,0.2514,0.2569,0.2742,0.2787,0.2886,0.2962,0.3014,0.3089,0.3226,0.3438,0.3515],"inst_sm":[0.2518,0.2553,0.2809,0.3225,0.352,0.3435,0.3374,0.3197,0.3466,0.3695,0.4284,0.4445,0.457,0.4622,0.4784,0.5197,0.586,0.6556,0.6721],"POLSTAB":[-0.7123,-0.6971,-0.5226,-0.4587,-0.3119,-0.3143,-0.3282,-0.3833,-0.3713,-0.41,-0.3867,-0.405,-0.3522,-0.3678,-0.4385,-0.5596,-0.6468,-0.5607,-0.4858],"GE":[-1.2456,-1.2321,-1.2158,-1.0705,-1.0482,-1.0922,-1.1068,-1.1417,-1.0961,-1.0762,-0.9857,-0.9509,-0.9762,-1.0286,-1.1304,-1.1708,-1.1366,-1.0538,-1.0175],"RLAW":[-1.388,-1.3837,-1.355,-1.33,-1.2959,-1.2621,-1.2849,-1.2909,-1.2236,-1.1322,-1.0365,-1.0249,-1.015,-1.0215,-0.9919,-0.9861,-0.9856,-1.035,-1.0606],"CORRUPT":[-1.2821,-1.2906,-1.2858,-1.338,-1.3463,-1.3659,-1.3341,-1.3356,-1.3659,-1.4076,-1.4566,-1.4523,-1.3762,-1.2331,-1.0631,-0.8797,-0.7323,-0.6239,-0.6111],"rank":[10,10,10,10,10,9,8,7,7,8,8,9,9,9,10,9,10,11,12]},"BEN":{"esi":[0.351,0.3477,0.3572,0.3606,0.3683,0.3685,0.3566,0.3539,0.3517,0.3498,0.3367,0.3216,0.3212,0.3249,0.3324,0.3346,0.3478,0.3849,0.4117],"esi_sm":[0.1071,0.1508,0.2212,0.213,0.2256,0.2421,0.2398,0.2361,0.2537,0.2931,0.3811,0.4447,0.5672,0.5752,0.6082,0.5925,0.6312,0.718,0.8917],"system":[0.4985,0.4921,0.4878,0.4949,0.4993,0.5003,0.5023,0.5042,0.5053,0.4936,0.4738,0.4609,0.4535,0.4605,0.4584,0.474,0.4873,0.5647,0.5983],"access":[0.0842,0.0865,0.0923,0.097,0.1066,0.1178,0.1293,0.1307,0.1282,0.1178,0.121,0.1215,0.1336,0.138,0.1467,0.1515,0.173,0.1939,0.2128],"market":[0.5351,0.4974,0.5121,0.51,0.5386,0.5243,0.4458,0.436,0.4334,0.4588,0.4031,0.3372,0.3142,0.3192,0.3336,0.3241,0.3412,0.3818,0.4349],"env":[0.7544,0.7454,0.7339,0.7291,0.7229,0.7173,0.7191,0.728,0.7324,0.7305,0.7182,0.7091,0.6987,0.7016,0.7014,0.7202,0.7327,0.7467,0.7484],"inst":[0.5067,0.5181,0.5353,0.528,0.5097,0.4983,0.4947,0.5005,0.5005,0.4971,0.4912,0.4805,0.4805,0.4816,0.5008,0.5203,0.5455,0.5599,0.5691],"inst_sm":[0.3829,0.403,0.4377,0.4182,0.3757,0.3498,0.3483,0.3658,0.3764,0.3674,0.3549,0.3271,0.3262,0.3383,0.4087,0.4827,0.5701,0.6089,0.641],"POLSTAB":[0.4988,0.4613,0.4368,0.3888,0.3471,0.3278,0.3147,0.328,0.2309,0.1026,-0.0007,-0.001,-0.0432,-0.1803,-0.3368,-0.4199,-0.3942,-0.362,-0.3449],"GE":[-0.65,-0.6146,-0.5612,-0.5439,-0.566,-0.584,-0.5613,-0.5276,-0.507,-0.5589,-0.5978,-0.6684,-0.6515,-0.6064,-0.4709,-0.3396,-0.233,-0.2091,-0.1948],"RLAW":[-0.5328,-0.5262,-0.5251,-0.5661,-0.6196,-0.6623,-0.6359,-0.6007,-0.5429,-0.5364,-0.5561,-0.6094,-0.6549,-0.6711,-0.7116,-0.6898,-0.6633,-0.5763,-0.5509],"CORRUPT":[-0.7292,-0.6429,-0.5238,-0.5372,-0.6022,-0.6327,-0.7096,-0.7363,-0.7577,-0.6597,-0.5875,-0.5564,-0.4991,-0.4325,-0.2537,-0.18,-0.1001,-0.1033,-0.0697],"rank":[12,12,12,13,12,12,12,12,12,13,14,15,15,16,14,14,14,12,10]},"BWA":{"esi":[0.6593,0.6638,0.6564,0.6612,0.6752,0.6819,0.6821,0.6586,0.6706,0.6869,0.688,0.6656,0.6517,0.6631,0.6746,0.6754,0.6536,0.6618,0.6533],"esi_sm":[0.1149,0.1386,0.1988,0.2352,0.2415,0.2313,0.1762,0.2896,0.3478,0.3957,0.3979,0.4168,0.5445,0.5652,0.6104,0.5794,0.6794,0.7061,0.723],"system":[0.7745,0.7777,0.7598,0.7436,0.7484,0.769,0.7859,0.7387,0.7343,0.7426,0.7923,0.8005,0.7979,0.7968,0.7979,0.8028,0.756,0.7884,0.7773],"access":[0.44,0.4487,0.4647,0.4756,0.4944,0.5106,0.5311,0.5428,0.5603,0.5783,0.592,0.5995,0.6031,0.6074,0.611,0.6152,0.6231,0.6294,0.633],"market":[0.675,0.6814,0.6603,0.6967,0.7572,0.746,0.6974,0.629,0.6679,0.6954,0.5836,0.4431,0.3808,0.4482,0.5276,0.5303,0.4966,0.4621,0.4293],"env":[0.7094,0.709,0.7099,0.7066,0.713,0.7169,0.724,0.714,0.6997,0.6818,0.6778,0.679,0.6787,0.6792,0.6856,0.6958,0.701,0.7036,0.7045],"inst":[0.9828,0.983,0.9776,0.9784,0.9738,0.9682,0.9714,0.9658,0.9525,0.9433,0.9397,0.932,0.917,0.9106,0.9004,0.9055,0.9076,0.921,0.9248],"inst_sm":[0.5142,0.5142,0.4987,0.5039,0.4935,0.4767,0.4812,0.4606,0.4264,0.4035,0.3967,0.3784,0.3429,0.3275,0.3064,0.3179,0.3235,0.3538,0.3634],"POLSTAB":[1.0403,1.0456,1.0355,1.0144,0.9927,1.0032,1.0532,1.0903,1.0727,1.0485,1.0075,1.0066,0.9823,1.021,1.0223,1.05,1.0429,1.0513,1.0562],"GE":[0.5012,0.5119,0.4907,0.4888,0.4405,0.4052,0.4074,0.4042,0.3664,0.3762,0.4157,0.4387,0.373,0.3325,0.2661,0.2891,0.3104,0.398,0.4352],"RLAW":[0.5274,0.5332,0.5563,0.5805,0.5978,0.5948,0.5976,0.5634,0.5427,0.5056,0.4675,0.4079,0.3748,0.3925,0.3997,0.4228,0.4316,0.4343,0.4248],"CORRUPT":[1.0487,1.0304,0.9843,0.9814,0.9845,0.9659,0.9588,0.9222,0.8709,0.829,0.8202,0.7867,0.7661,0.7056,0.6718,0.6538,0.6459,0.6709,0.6739],"rank":[3,3,3,3,3,3,3,4,3,3,3,3,3,3,3,3,3,3,3]},"BFA":{"esi":[0.2509,0.2564,0.2598,0.2897,0.295,0.2876,0.2742,0.2651,0.2425,0.2397,0.2455,0.2711,0.2774,0.2668,0.2507,0.2415,0.2304,0.2582,0.2657],"esi_sm":[0.1493,0.1852,0.2504,0.333,0.425,0.4203,0.3946,0.3906,0.3459,0.355,0.3537,0.39,0.4252,0.4469,0.4462,0.4844,0.5229,0.6146,0.6588],"system":[0.5069,0.5207,0.5112,0.5374,0.5167,0.5019,0.4875,0.4879,0.4895,0.492,0.5015,0.507,0.5109,0.5091,0.5181,0.5183,0.5093,0.5575,0.5827],"access":[0.0273,0.029,0.0322,0.035,0.0384,0.044,0.0503,0.0561,0.0646,0.0691,0.0737,0.074,0.0751,0.0799,0.0858,0.0953,0.102,0.1101,0.1142],"market":[0.234,0.2254,0.2441,0.3375,0.3946,0.3848,0.3432,0.3071,0.1774,0.1398,0.127,0.2308,0.2469,0.1915,0.0919,0.0425,0.0042,0.0825,0.0921],"env":[0.875,0.8705,0.8656,0.8618,0.8597,0.8547,0.847,0.8391,0.8359,0.8291,0.826,0.8174,0.8122,0.8062,0.8046,0.8038,0.8027,0.8023,0.8034],"inst":[0.5331,0.5349,0.5404,0.5519,0.5556,0.5362,0.5087,0.4725,0.4559,0.455,0.4692,0.4809,0.4815,0.4643,0.4465,0.4303,0.4141,0.3865,0.3672],"inst_sm":[0.487,0.4944,0.5152,0.5508,0.5696,0.5236,0.4565,0.3762,0.3419,0.335,0.3674,0.4002,0.4205,0.3926,0.3729,0.3597,0.3451,0.3024,0.2722],"POLSTAB":[0.0466,0.1334,0.1938,0.1533,0.0117,-0.213,-0.4154,-0.6306,-0.7079,-0.7199,-0.755,-0.8019,-0.9523,-1.0968,-1.3001,-1.4944,-1.6654,-1.8312,-1.9253],"GE":[-0.7027,-0.7252,-0.7003,-0.6393,-0.5789,-0.5916,-0.5966,-0.6236,-0.6317,-0.6516,-0.6412,-0.6565,-0.6405,-0.6869,-0.7101,-0.7504,-0.7754,-0.8148,-0.8397],"RLAW":[-0.4672,-0.4434,-0.3914,-0.3149,-0.2479,-0.2498,-0.3237,-0.4343,-0.4995,-0.5379,-0.5141,-0.4705,-0.4432,-0.446,-0.4639,-0.4652,-0.5146,-0.6056,-0.6769],"CORRUPT":[-0.2078,-0.2484,-0.3162,-0.3281,-0.3372,-0.3604,-0.406,-0.4622,-0.4916,-0.4305,-0.3119,-0.2026,-0.1468,-0.1633,-0.1578,-0.1414,-0.1054,-0.1213,-0.1406],"rank":[17,17,17,15,15,17,19,19,20,20,21,20,21,21,21,22,23,24,26]},"CMR":{"esi":[0.2925,0.3169,0.3428,0.367,0.3419,0.3376,0.3181,0.3253,0.3006,0.2948,0.2844,0.3066,0.3202,0.3304,0.3225,0.3153,0.3125,0.3267,0.3296],"esi_sm":[0.2011,0.2112,0.2344,0.2898,0.2745,0.3248,0.3166,0.3509,0.3146,0.3531,0.3858,0.4344,0.4499,0.4997,0.514,0.5251,0.5896,0.6406,0.6819],"system":[0.5703,0.5807,0.5974,0.6019,0.5944,0.5678,0.5663,0.5624,0.5755,0.5736,0.5802,0.5891,0.597,0.6054,0.6016,0.5952,0.5674,0.6042,0.6126],"access":[0.2232,0.2263,0.2367,0.244,0.2532,0.2587,0.2648,0.2709,0.2777,0.2855,0.2927,0.3009,0.3083,0.3161,0.3238,0.3314,0.3456,0.3599,0.3695],"market":[0.3976,0.4866,0.5564,0.6497,0.5148,0.5427,0.4486,0.4884,0.3063,0.2486,0.1754,0.2841,0.3532,0.4005,0.363,0.3464,0.361,0.3464,0.3324],"env":[0.9202,0.9105,0.8977,0.8869,0.8837,0.883,0.888,0.8879,0.8824,0.8734,0.8734,0.8751,0.8758,0.8752,0.8728,0.8843,0.8877,0.8897,0.8906],"inst":[0.3073,0.312,0.3166,0.3195,0.3109,0.3021,0.2919,0.2914,0.2919,0.2935,0.2867,0.2767,0.2602,0.2428,0.2293,0.2288,0.2394,0.2469,0.2493],"inst_sm":[0.4486,0.4592,0.471,0.4814,0.464,0.4427,0.4208,0.4181,0.4313,0.4446,0.444,0.4154,0.3862,0.3602,0.3413,0.3394,0.3585,0.3747,0.3821],"POLSTAB":[-0.2134,-0.2509,-0.3743,-0.451,-0.588,-0.6245,-0.6624,-0.5941,-0.7267,-0.8605,-1.0368,-1.0475,-1.1848,-1.3517,-1.4924,-1.4899,-1.4291,-1.3914,-1.39],"GE":[-0.9516,-0.9191,-0.8848,-0.8454,-0.8617,-0.8838,-0.901,-0.9086,-0.8814,-0.8575,-0.8232,-0.8393,-0.8472,-0.8617,-0.885,-0.9007,-0.9058,-0.8974,-0.8939],"RLAW":[-1.1767,-1.1797,-1.1515,-1.1409,-1.1053,-1.097,-1.0677,-1.0607,-0.9997,-0.9848,-0.9851,-1.0362,-1.0711,-1.0986,-1.1374,-1.1418,-1.1077,-1.0645,-1.0386],"CORRUPT":[-1.1454,-1.108,-1.0529,-1.0293,-1.0434,-1.0876,-1.1716,-1.219,-1.223,-1.1644,-1.1516,-1.1671,-1.1892,-1.2019,-1.1733,-1.1576,-1.1284,-1.1361,-1.1461],"rank":[15,13,13,12,13,13,13,13,16,17,18,16,16,13,16,17,17,19,21]},"COD":{"esi":[0.0555,0.0565,0.0647,0.0654,0.0659,0.0624,0.0605,0.0625,0.0689,0.074,0.0592,0.0588,0.0652,0.0861,0.08,0.069,0.0438,0.082,0.0945],"esi_sm":[0.3567,0.3341,0.3463,0.3493,0.3726,0.3831,0.4042,0.4064,0.3956,0.4198,0.4208,0.4103,0.4059,0.3829,0.3789,0.3731,0.3601,0.4639,0.6281],"system":[0.2233,0.2322,0.2477,0.2538,0.2515,0.2489,0.2344,0.2329,0.2395,0.2495,0.2243,0.2286,0.2514,0.2941,0.2816,0.2592,0.2482,0.4145,0.5053],"access":[0.0131,0.0226,0.0309,0.0344,0.0325,0.0361,0.0407,0.0445,0.0454,0.0477,0.0506,0.0564,0.0597,0.0631,0.0668,0.0703,0.074,0.0773,0.0789],"market":[0.4436,0.4224,0.4216,0.402,0.4167,0.4161,0.4262,0.4156,0.4145,0.4206,0.3996,0.4018,0.395,0.4159,0.4106,0.4017,0.2952,0.1759,0.0687],"env":[0.9873,0.9869,0.9869,0.9864,0.9874,0.9889,0.9888,0.9865,0.9833,0.9843,0.9892,0.9884,0.9854,0.9792,0.9842,0.9937,1.0,0.9994,0.998],"inst":[0.0214,0.0178,0.0233,0.029,0.026,0.0108,0.0115,0.0268,0.0431,0.0449,0.0374,0.016,0.005,0.0019,0.002,0.0058,0.0,0.006,0.0034],"inst_sm":[0.4375,0.4241,0.4326,0.4406,0.4327,0.399,0.4024,0.4433,0.4898,0.498,0.4761,0.4201,0.39,0.3681,0.3613,0.367,0.3559,0.3726,0.3724],"POLSTAB":[-2.1876,-2.1846,-2.1428,-2.0609,-2.0669,-2.1369,-2.1652,-2.1637,-2.1487,-2.1663,-2.1771,-2.2343,-2.2148,-2.0155,-1.8312,-1.6912,-1.8106,-1.8967,-2.0147],"GE":[-1.5624,-1.6198,-1.6446,-1.6761,-1.6708,-1.6843,-1.6812,-1.5977,-1.5596,-1.5594,-1.5899,-1.6231,-1.5996,-1.6316,-1.6577,-1.7191,-1.7494,-1.7308,-1.7179],"RLAW":[-1.5831,-1.5937,-1.6034,-1.6108,-1.615,-1.6322,-1.6385,-1.6245,-1.5703,-1.5495,-1.5705,-1.6532,-1.7209,-1.7765,-1.8141,-1.7875,-1.7398,-1.6888,-1.6713],"CORRUPT":[-1.4919,-1.455,-1.3943,-1.3517,-1.3773,-1.4428,-1.415,-1.3752,-1.3297,-1.3236,-1.3331,-1.3745,-1.4434,-1.5062,-1.5554,-1.5726,-1.5691,-1.5317,-1.5127],"rank":[26,26,26,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27]},"COG":{"esi":[0.3573,0.3683,0.379,0.3958,0.4065,0.4148,0.4038,0.3997,0.3981,0.3981,0.3768,0.3724,0.3699,0.3888,0.3991,0.4026,0.4015,0.4221,0.4344],"esi_sm":[0.2129,0.2132,0.1988,0.2284,0.2806,0.3234,0.2837,0.2865,0.2785,0.343,0.3727,0.4523,0.4609,0.5138,0.5644,0.6015,0.6027,0.667,0.7081],"system":[0.5872,0.6112,0.6401,0.6449,0.6374,0.6292,0.6197,0.6106,0.6145,0.6222,0.6281,0.6293,0.6263,0.6244,0.618,0.611,0.6042,0.6569,0.6804],"access":[0.1492,0.153,0.1609,0.1681,0.1778,0.1877,0.2009,0.2121,0.2237,0.2367,0.2506,0.2646,0.2755,0.287,0.2988,0.3111,0.324,0.3344,0.3383],"market":[0.7565,0.7564,0.7271,0.7652,0.79,0.8306,0.7954,0.7869,0.7497,0.6924,0.5379,0.4947,0.4612,0.5237,0.5339,0.5329,0.5043,0.4913,0.4909],"env":[0.8247,0.8228,0.8203,0.8083,0.7965,0.7977,0.8105,0.8182,0.8176,0.8051,0.8001,0.7926,0.7843,0.7671,0.746,0.7361,0.7274,0.7264,0.7206],"inst":[0.2009,0.2073,0.225,0.2392,0.2533,0.2635,0.262,0.2643,0.2683,0.2701,0.2671,0.2515,0.247,0.2462,0.2512,0.2502,0.2524,0.2624,0.2701],"inst_sm":[0.3503,0.3519,0.3762,0.3889,0.4119,0.4296,0.4318,0.443,0.4558,0.4634,0.4572,0.4206,0.4038,0.4008,0.4094,0.4051,0.4051,0.4295,0.4487],"POLSTAB":[-1.0446,-0.9536,-0.8054,-0.5811,-0.4294,-0.3071,-0.3868,-0.4397,-0.4413,-0.4545,-0.4706,-0.5287,-0.4685,-0.3937,-0.2869,-0.2473,-0.1345,-0.0571,0.0291],"GE":[-1.26,-1.2823,-1.2649,-1.2561,-1.2257,-1.2196,-1.2054,-1.1799,-1.1549,-1.12,-1.1115,-1.1497,-1.193,-1.1923,-1.1955,-1.2354,-1.3148,-1.3414,-1.3522],"RLAW":[-1.3688,-1.3203,-1.2277,-1.2123,-1.2105,-1.2152,-1.1892,-1.1569,-1.1275,-1.1255,-1.135,-1.1477,-1.147,-1.1339,-1.1212,-1.1096,-1.1029,-1.0701,-1.0555],"CORRUPT":[-1.0839,-1.1096,-1.1542,-1.1893,-1.1881,-1.1721,-1.1774,-1.1839,-1.2023,-1.2161,-1.2329,-1.2884,-1.324,-1.3936,-1.4249,-1.4296,-1.4041,-1.3657,-1.3525],"rank":[11,11,11,11,11,10,10,10,11,11,12,11,11,10,9,10,9,9,9]},"CIV":{"esi":[0.2438,0.2512,0.2526,0.261,0.2789,0.2774,0.285,0.2918,0.3435,0.3784,0.3944,0.3838,0.381,0.3835,0.388,0.3968,0.3913,0.4063,0.4012],"esi_sm":[0.0616,0.0573,0.1005,0.0554,0.0745,0.0411,0.0432,0.071,0.1782,0.3272,0.5327,0.6512,0.6809,0.6937,0.6675,0.6777,0.7786,0.9205,0.9793],"system":[0.4887,0.4965,0.4946,0.5176,0.539,0.5529,0.5579,0.5551,0.5699,0.5854,0.5854,0.561,0.5592,0.5787,0.6148,0.6226,0.6047,0.6153,0.6145],"access":[0.2645,0.26,0.2636,0.2622,0.2692,0.2661,0.2689,0.2777,0.2932,0.3085,0.3193,0.3318,0.3455,0.36,0.3737,0.3885,0.4024,0.4148,0.4203],"market":[0.3132,0.3378,0.3218,0.307,0.3426,0.2946,0.2914,0.2556,0.4082,0.4809,0.5176,0.4837,0.4578,0.4164,0.3486,0.3376,0.2777,0.2875,0.2347],"env":[0.8522,0.8547,0.8549,0.8584,0.856,0.8581,0.8509,0.8438,0.8351,0.8259,0.8205,0.814,0.8176,0.8214,0.8249,0.8172,0.8104,0.808,0.8086],"inst":[0.1018,0.1141,0.1365,0.1613,0.1702,0.1909,0.2088,0.2619,0.3301,0.3834,0.4102,0.4038,0.4057,0.4112,0.4225,0.4332,0.465,0.4967,0.516],"inst_sm":[0.0393,0.0495,0.0689,0.0916,0.1,0.1236,0.1474,0.2261,0.3632,0.496,0.5772,0.5563,0.565,0.588,0.6255,0.6547,0.7598,0.8798,0.9714],"POLSTAB":[-2.0607,-1.987,-1.8352,-1.6548,-1.5696,-1.4369,-1.4177,-1.2393,-1.1164,-0.9737,-0.9272,-0.9451,-0.9661,-1.0085,-0.9892,-0.9282,-0.7785,-0.6447,-0.6095],"GE":[-1.2567,-1.2441,-1.2118,-1.1994,-1.2256,-1.2016,-1.1955,-1.0757,-0.9679,-0.8477,-0.7804,-0.7654,-0.732,-0.6729,-0.5819,-0.5451,-0.47,-0.4101,-0.3466],"RLAW":[-1.5011,-1.4913,-1.4576,-1.3876,-1.3091,-1.2572,-1.2043,-1.0972,-0.8674,-0.7198,-0.6359,-0.6551,-0.6388,-0.6213,-0.6234,-0.6428,-0.5973,-0.5321,-0.4676],"CORRUPT":[-1.2287,-1.1841,-1.1405,-1.1105,-1.1364,-1.1071,-1.0141,-0.8699,-0.666,-0.5406,-0.479,-0.5228,-0.5441,-0.5468,-0.5472,-0.5036,-0.4286,-0.349,-0.3259],"rank":[19,18,18,18,18,19,18,17,13,12,10,10,10,11,11,11,11,10,11]},"SWZ":{"esi":[0.3842,0.3946,0.4146,0.4367,0.4564,0.4521,0.4315,0.4092,0.4146,0.4252,0.4224,0.4334,0.4221,0.437,0.4235,0.4356,0.4344,0.4623,0.4761],"esi_sm":[0.1575,0.1829,0.2455,0.3112,0.3684,0.3742,0.3521,0.3505,0.3854,0.4282,0.3938,0.439,0.4554,0.4795,0.4653,0.4789,0.4919,0.5866,0.646],"system":[0.6329,0.6389,0.649,0.6647,0.6881,0.6823,0.6595,0.6212,0.6287,0.6335,0.6451,0.6495,0.6603,0.6742,0.6756,0.6845,0.6857,0.7422,0.765],"access":[0.3009,0.3123,0.3319,0.3563,0.3811,0.4004,0.413,0.4257,0.4492,0.4692,0.4788,0.4939,0.5076,0.5291,0.5374,0.5505,0.5587,0.5684,0.5709],"market":[0.3465,0.357,0.378,0.4238,0.4523,0.4622,0.4302,0.393,0.3754,0.3938,0.3557,0.3596,0.2478,0.2764,0.2151,0.2857,0.2911,0.3578,0.3902],"env":[0.8315,0.832,0.8352,0.8362,0.8433,0.8589,0.8796,0.8857,0.888,0.8864,0.891,0.8828,0.8766,0.8739,0.8773,0.881,0.8814,0.8816,0.8806],"inst":[0.4764,0.4974,0.5469,0.563,0.579,0.56,0.543,0.5248,0.531,0.5321,0.5283,0.5416,0.54,0.5343,0.5134,0.4833,0.4589,0.4273,0.4227],"inst_sm":[0.3107,0.3512,0.4697,0.5088,0.5598,0.5117,0.4766,0.4378,0.4586,0.4653,0.4596,0.4875,0.4815,0.4565,0.3943,0.3241,0.2778,0.2302,0.2216],"POLSTAB":[-0.332,-0.2053,-0.1001,-0.0147,-0.0561,-0.1902,-0.3212,-0.4398,-0.4467,-0.4709,-0.4917,-0.4151,-0.381,-0.3077,-0.2309,-0.2203,-0.199,-0.3047,-0.284],"GE":[-0.7516,-0.6922,-0.5311,-0.4903,-0.3985,-0.4163,-0.4018,-0.4258,-0.4171,-0.4686,-0.5259,-0.5247,-0.5687,-0.6009,-0.6884,-0.7147,-0.7623,-0.8058,-0.8332],"RLAW":[-0.7388,-0.7241,-0.6083,-0.5689,-0.4942,-0.4949,-0.5132,-0.5207,-0.4465,-0.3743,-0.3363,-0.324,-0.31,-0.3431,-0.4179,-0.5176,-0.5733,-0.6062,-0.6216],"CORRUPT":[-0.1602,-0.1219,-0.0179,-0.0067,-0.0056,-0.0791,-0.1501,-0.2123,-0.2366,-0.2337,-0.2349,-0.1734,-0.1788,-0.2099,-0.2831,-0.4384,-0.5721,-0.7196,-0.7306],"rank":[9,9,9,8,7,7,7,9,9,9,9,8,8,8,8,8,8,7,7]},"ETH":{"esi":[0.0,0.0253,0.0488,0.0734,0.0816,0.0953,0.1098,0.1358,0.1598,0.1822,0.1968,0.2175,0.2344,0.2274,0.2326,0.236,0.2544,0.291,0.3058],"esi_sm":[0.1384,0.1584,0.1631,0.151,0.1405,0.1318,0.1798,0.2343,0.3186,0.3682,0.4365,0.4731,0.5123,0.5751,0.6192,0.6284,0.6445,0.7902,0.929],"system":[0.0,0.0367,0.1007,0.1506,0.1926,0.2313,0.2611,0.2861,0.3093,0.3351,0.3607,0.3882,0.4128,0.4047,0.4103,0.4215,0.4448,0.5338,0.5664],"access":[0.0356,0.041,0.0519,0.0591,0.0666,0.0692,0.0778,0.0866,0.0939,0.0961,0.1134,0.1371,0.1592,0.1674,0.1776,0.1903,0.2008,0.2071,0.2092],"market":[0.1606,0.2052,0.1705,0.2044,0.1717,0.1788,0.1738,0.2248,0.285,0.3532,0.3814,0.4224,0.4326,0.3738,0.3619,0.351,0.4231,0.4744,0.4977],"env":[0.9451,0.9455,0.9467,0.9475,0.9517,0.9571,0.9563,0.9452,0.9486,0.9479,0.9578,0.9499,0.9508,0.9434,0.9423,0.9338,0.9337,0.9351,0.9365],"inst":[0.3103,0.3289,0.358,0.3569,0.3524,0.3535,0.3685,0.3815,0.4063,0.4085,0.4077,0.3834,0.3922,0.4025,0.4165,0.3928,0.3648,0.3404,0.3372],"inst_sm":[0.2685,0.3094,0.3836,0.3825,0.3689,0.365,0.4002,0.4216,0.4839,0.4874,0.4928,0.4389,0.459,0.4803,0.5205,0.4747,0.4243,0.3671,0.3545],"POLSTAB":[-1.7153,-1.7456,-1.7596,-1.7265,-1.6694,-1.5944,-1.5688,-1.4928,-1.437,-1.4145,-1.4845,-1.5971,-1.523,-1.4185,-1.444,-1.7471,-2.0027,-2.0747,-2.0201],"GE":[-0.8041,-0.6933,-0.5375,-0.4948,-0.5005,-0.5242,-0.4881,-0.5321,-0.5061,-0.5921,-0.6232,-0.7285,-0.7135,-0.6959,-0.6393,-0.6338,-0.6773,-0.737,-0.7802],"RLAW":[-0.8032,-0.7553,-0.6779,-0.7328,-0.7822,-0.7939,-0.7422,-0.6896,-0.5985,-0.5485,-0.5012,-0.5016,-0.4741,-0.4655,-0.4432,-0.5027,-0.554,-0.6431,-0.653],"CORRUPT":[-0.7113,-0.6849,-0.6496,-0.6678,-0.6884,-0.6889,-0.6569,-0.5927,-0.5195,-0.4753,-0.4555,-0.5002,-0.5099,-0.5074,-0.4432,-0.4154,-0.415,-0.4401,-0.4492],"rank":[27,27,27,26,26,26,26,26,25,24,23,23,23,22,22,23,22,22,22]},"GAB":{"esi":[0.5025,0.4903,0.4727,0.4645,0.4599,0.4603,0.4863,0.5042,0.5217,0.513,0.5121,0.4997,0.4862,0.4712,0.4629,0.474,0.4841,0.5045,0.5065],"esi_sm":[0.3675,0.3271,0.296,0.2963,0.3176,0.3253,0.362,0.3618,0.4234,0.4479,0.4592,0.4204,0.4019,0.3981,0.4283,0.4501,0.4804,0.499,0.5299],"system":[0.6165,0.6089,0.5886,0.57,0.5524,0.5691,0.6083,0.6278,0.6267,0.6143,0.6265,0.6391,0.6419,0.637,0.6156,0.6172,0.6202,0.7027,0.737],"access":[0.6166,0.621,0.629,0.6368,0.6515,0.6644,0.679,0.6805,0.6832,0.6853,0.6938,0.6992,0.7071,0.7126,0.7208,0.7254,0.7329,0.7389,0.7422],"market":[0.6166,0.5862,0.5605,0.535,0.4936,0.4138,0.4369,0.4968,0.5906,0.5814,0.5554,0.5099,0.4578,0.4135,0.4029,0.4536,0.492,0.4556,0.4079],"env":[0.8172,0.8246,0.8316,0.8346,0.8292,0.8244,0.8176,0.8202,0.8239,0.8304,0.8288,0.8386,0.849,0.8613,0.8648,0.8663,0.8683,0.8718,0.8728],"inst":[0.4504,0.4357,0.4053,0.4159,0.4357,0.4585,0.4725,0.4778,0.4865,0.4802,0.4638,0.4278,0.4084,0.3945,0.396,0.4006,0.4058,0.3958,0.3865],"inst_sm":[0.4422,0.406,0.3423,0.3718,0.4192,0.4773,0.5108,0.5237,0.5521,0.5376,0.5026,0.4084,0.3668,0.332,0.334,0.3399,0.3502,0.3399,0.3264],"POLSTAB":[0.2728,0.2828,0.2616,0.2351,0.2339,0.2749,0.3258,0.3361,0.2576,0.165,0.0182,-0.0669,-0.1578,-0.1461,-0.1327,-0.0722,-0.027,-0.117,-0.1376],"GE":[-0.836,-0.8352,-0.8567,-0.8322,-0.8197,-0.8019,-0.8682,-0.8925,-0.8123,-0.745,-0.7329,-0.8654,-0.8879,-0.9295,-0.9252,-0.9218,-0.8311,-0.7605,-0.7326],"RLAW":[-0.5756,-0.6192,-0.6951,-0.6115,-0.5299,-0.4561,-0.4265,-0.4468,-0.4702,-0.5201,-0.5498,-0.6332,-0.685,-0.7332,-0.7186,-0.7148,-0.7373,-0.8015,-0.8482],"CORRUPT":[-0.8716,-0.9698,-1.1384,-1.1364,-1.0494,-0.9585,-0.8216,-0.7312,-0.6595,-0.6786,-0.7201,-0.7747,-0.8199,-0.8627,-0.8777,-0.8806,-0.9326,-0.9755,-1.0293],"rank":[5,5,5,6,6,6,6,6,5,6,5,6,6,6,6,6,6,5,5]},"GHA":{"esi":[0.4179,0.4332,0.4557,0.4682,0.4799,0.4939,0.4992,0.515,0.5149,0.514,0.502,0.5045,0.4963,0.5045,0.5101,0.5203,0.5091,0.502,0.4961],"esi_sm":[0.0074,0.047,0.1089,0.1382,0.1493,0.1971,0.243,0.2913,0.2971,0.325,0.3733,0.4951,0.6299,0.6534,0.6667,0.7085,0.7347,0.7549,0.7714],"system":[0.595,0.596,0.603,0.6032,0.6126,0.616,0.6144,0.6312,0.6361,0.6368,0.6383,0.6457,0.6577,0.6711,0.6815,0.6909,0.6953,0.7316,0.7484],"access":[0.2109,0.2227,0.2509,0.2612,0.2757,0.2859,0.2869,0.3018,0.3252,0.3508,0.3663,0.3741,0.3913,0.4052,0.4216,0.4376,0.4477,0.4596,0.4634],"market":[0.584,0.6146,0.6628,0.7273,0.7697,0.8055,0.8182,0.8393,0.81,0.7703,0.6866,0.6474,0.5433,0.5278,0.5012,0.5025,0.4095,0.2892,0.222],"env":[0.853,0.8409,0.8354,0.8353,0.8387,0.8301,0.8211,0.8147,0.8113,0.8053,0.7998,0.7892,0.7822,0.7766,0.7676,0.76,0.7542,0.7567,0.7591],"inst":[0.6548,0.669,0.6844,0.6755,0.6671,0.6733,0.675,0.6777,0.6599,0.6484,0.632,0.6404,0.6403,0.6464,0.6454,0.6475,0.6454,0.6454,0.6466],"inst_sm":[0.4043,0.4453,0.4961,0.4672,0.4388,0.4497,0.452,0.4606,0.423,0.404,0.3673,0.3835,0.3802,0.3883,0.3797,0.3803,0.3813,0.3865,0.3952],"POLSTAB":[0.0881,0.0344,-0.0321,-0.0249,0.0081,0.0737,0.108,0.1195,0.0282,-0.0281,-0.0946,-0.0317,-0.0312,0.0546,0.0839,0.1181,0.0136,-0.0503,-0.1083],"GE":[-0.0918,-0.0325,0.0278,-0.023,-0.0861,-0.1059,-0.0943,-0.1049,-0.1775,-0.2541,-0.2939,-0.2537,-0.2537,-0.2657,-0.269,-0.2212,-0.16,-0.1252,-0.0995],"RLAW":[-0.039,-0.0129,0.0111,-0.0218,-0.046,-0.0263,-0.0066,0.0559,0.0781,0.1135,0.0732,0.0873,0.0633,0.0564,-0.0061,-0.059,-0.0898,-0.0956,-0.0896],"CORRUPT":[-0.1915,-0.1149,-0.0178,-0.0164,-0.0244,-0.0083,-0.0471,-0.0841,-0.1395,-0.1676,-0.1939,-0.2133,-0.1891,-0.1668,-0.1247,-0.1213,-0.1065,-0.0971,-0.0817],"rank":[8,8,7,5,5,5,5,5,6,5,6,5,5,5,5,5,5,6,6]},"KEN":{"esi":[0.2421,0.248,0.2456,0.2525,0.2645,0.2859,0.3008,0.3035,0.3072,0.3188,0.337,0.3493,0.342,0.3486,0.3465,0.3716,0.3658,0.3741,0.3671],"esi_sm":[0.1107,0.1098,0.0911,0.0952,0.1279,0.1731,0.2384,0.2572,0.3046,0.3626,0.4484,0.5375,0.5318,0.5643,0.5995,0.678,0.732,0.8116,0.8186],"system":[0.5143,0.5222,0.5329,0.5374,0.5394,0.5417,0.5485,0.5469,0.5341,0.5128,0.5094,0.5098,0.5208,0.5239,0.534,0.5445,0.5531,0.5638,0.5684],"access":[0.0903,0.0952,0.1051,0.1032,0.0942,0.1045,0.1267,0.1568,0.1608,0.1703,0.1922,0.2232,0.2544,0.2829,0.3107,0.3393,0.3568,0.3732,0.3778],"market":[0.2911,0.3057,0.258,0.2851,0.3354,0.4016,0.442,0.4094,0.3972,0.4121,0.4286,0.4171,0.301,0.261,0.2007,0.2481,0.1676,0.1534,0.0964],"env":[0.8689,0.8706,0.8667,0.8543,0.8434,0.8315,0.8386,0.8377,0.8244,0.7946,0.7678,0.7477,0.7444,0.7308,0.7353,0.725,0.7287,0.7294,0.7305],"inst":[0.3229,0.3225,0.3159,0.2987,0.3029,0.315,0.3282,0.3366,0.3637,0.3857,0.3983,0.3986,0.4052,0.4129,0.4133,0.4278,0.4428,0.4612,0.4662],"inst_sm":[0.2794,0.2805,0.2709,0.2436,0.249,0.2699,0.2931,0.3101,0.3759,0.4349,0.4809,0.4763,0.4923,0.5049,0.4973,0.535,0.5798,0.6454,0.6641],"POLSTAB":[-1.1887,-1.2276,-1.2753,-1.3749,-1.3282,-1.2786,-1.2446,-1.2451,-1.2575,-1.2302,-1.2927,-1.2414,-1.2209,-1.138,-1.0976,-1.0485,-0.9957,-0.9725,-0.9425],"GE":[-0.6823,-0.6313,-0.603,-0.6061,-0.624,-0.6087,-0.5672,-0.5322,-0.459,-0.4102,-0.3851,-0.3956,-0.4288,-0.4419,-0.4449,-0.389,-0.3516,-0.3197,-0.3166],"RLAW":[-0.8816,-0.9115,-0.9512,-0.998,-0.9922,-0.9632,-0.8995,-0.8199,-0.6529,-0.5449,-0.4588,-0.4654,-0.4391,-0.4416,-0.4907,-0.4885,-0.4395,-0.3552,-0.3221],"CORRUPT":[-0.974,-0.9755,-0.9941,-1.0392,-1.0167,-0.9818,-0.9912,-1.0329,-1.0248,-1.0023,-0.9616,-0.9734,-0.9174,-0.8813,-0.8481,-0.8054,-0.7899,-0.755,-0.7652],"rank":[20,20,19,19,19,18,17,16,15,14,13,13,12,12,12,12,12,13,16]},"MDG":{"esi":[0.2469,0.2502,0.2398,0.239,0.22,0.2082,0.189,0.1852,0.1814,0.1863,0.1823,0.1854,0.1896,0.1854,0.1875,0.191,0.202,0.2482,0.2663],"esi_sm":[0.5187,0.5121,0.4277,0.3744,0.2884,0.2525,0.2854,0.333,0.3584,0.3682,0.3544,0.3536,0.3417,0.4338,0.4374,0.4581,0.4116,0.509,0.5739],"system":[0.4288,0.4353,0.4471,0.4506,0.4485,0.4426,0.429,0.4187,0.4074,0.404,0.3986,0.3946,0.3997,0.3528,0.3419,0.329,0.3683,0.4857,0.5453],"access":[0.0369,0.0383,0.0411,0.0417,0.0351,0.0303,0.0327,0.0343,0.046,0.0527,0.065,0.0666,0.083,0.094,0.1039,0.1023,0.109,0.1191,0.1226],"market":[0.3779,0.3871,0.3411,0.3788,0.3512,0.3328,0.2435,0.2239,0.2075,0.2354,0.21,0.2301,0.2354,0.2894,0.3164,0.3389,0.3021,0.3152,0.2992],"env":[0.9127,0.9152,0.9172,0.9199,0.9169,0.9084,0.8917,0.8759,0.8678,0.8668,0.8697,0.8668,0.8691,0.8644,0.87,0.8618,0.86,0.8539,0.8533],"inst":[0.5735,0.5723,0.5393,0.4956,0.4262,0.3821,0.3567,0.3443,0.3313,0.3265,0.329,0.3262,0.3173,0.3072,0.3099,0.3183,0.3281,0.3219,0.3181],"inst_sm":[1.0,0.994,0.8571,0.7182,0.5218,0.403,0.3298,0.2918,0.2654,0.2632,0.2693,0.2597,0.2431,0.2242,0.2294,0.243,0.2651,0.2555,0.2497],"POLSTAB":[0.0835,0.0855,-0.0647,-0.3712,-0.7272,-0.8059,-0.74,-0.6339,-0.5845,-0.5483,-0.4264,-0.3416,-0.3919,-0.3985,-0.4674,-0.4552,-0.5108,-0.5713,-0.5858],"GE":[-0.5178,-0.5118,-0.6132,-0.6751,-0.8403,-0.9685,-1.0605,-1.1113,-1.1958,-1.2674,-1.2945,-1.2517,-1.2118,-1.2,-1.1529,-1.0914,-1.0177,-1.0076,-0.9974],"RLAW":[-0.4006,-0.3969,-0.4312,-0.5259,-0.6889,-0.8353,-0.9004,-0.9145,-0.8618,-0.7876,-0.758,-0.8043,-0.848,-0.9085,-0.9098,-0.9262,-0.9051,-0.9369,-0.9625],"CORRUPT":[-0.119,-0.1414,-0.2118,-0.2604,-0.3377,-0.4103,-0.5242,-0.6397,-0.7592,-0.8292,-0.8861,-0.9632,-1.0101,-1.0493,-1.0281,-1.0054,-0.9779,-0.9744,-0.985],"rank":[18,19,20,20,20,23,23,23,23,23,24,25,25,25,26,26,25,25,25]},"MUS":{"esi":[0.7988,0.8068,0.811,0.8207,0.826,0.8401,0.8556,0.8707,0.886,0.8884,0.8483,0.8123,0.7773,0.7811,0.7689,0.7664,0.754,0.7612,0.7541],"esi_sm":[0.1987,0.2209,0.2379,0.2473,0.2389,0.2394,0.2639,0.2932,0.3436,0.3587,0.3946,0.4367,0.6128,0.6422,0.583,0.5744,0.5562,0.5746,0.5752],"system":[0.8237,0.8298,0.8409,0.8574,0.8767,0.892,0.904,0.9132,0.9217,0.9253,0.915,0.9151,0.9217,0.9365,0.9294,0.9227,0.924,0.9389,0.9491],"access":[0.847,0.851,0.859,0.8656,0.8732,0.8796,0.8866,0.8925,0.8982,0.9041,0.909,0.9139,0.9177,0.9232,0.9183,0.9143,0.9119,0.9227,0.9296],"market":[0.8329,0.8524,0.8238,0.827,0.8015,0.8377,0.8771,0.9334,0.9946,1.0,0.8019,0.6123,0.418,0.4107,0.3533,0.3441,0.2692,0.2769,0.2167],"env":[0.699,0.6976,0.6937,0.6944,0.6937,0.6939,0.6926,0.6927,0.6923,0.6936,0.6941,0.6944,0.6942,0.6946,0.6961,0.6948,0.6956,0.6961,0.6973],"inst":[0.9461,0.9513,0.9638,0.9752,0.9816,0.9858,0.9979,1.0,0.999,0.9949,0.9843,0.9676,0.9497,0.9432,0.9555,0.9659,0.9743,0.9641,0.9588],"inst_sm":[0.3522,0.3617,0.391,0.4222,0.4463,0.4555,0.4821,0.4834,0.4955,0.4823,0.4566,0.404,0.3578,0.3413,0.3673,0.393,0.4158,0.3935,0.3818],"POLSTAB":[0.9043,0.896,0.8502,0.8259,0.7462,0.7648,0.8527,0.9542,0.8614,0.8671,0.8853,0.9834,0.9404,0.8747,0.8449,0.8359,0.8452,0.8127,0.8027],"GE":[0.6601,0.6901,0.7594,0.7918,0.8435,0.8626,0.9427,0.9464,1.0355,1.0644,1.0986,1.0351,0.9579,0.9056,0.8702,0.8432,0.8111,0.7634,0.7382],"RLAW":[0.8858,0.8743,0.8733,0.8957,0.9077,0.9067,0.9488,0.9752,0.9797,0.9196,0.8268,0.7339,0.6895,0.6911,0.7634,0.8075,0.842,0.8148,0.8008],"CORRUPT":[0.2462,0.2811,0.3549,0.4191,0.4629,0.4707,0.3995,0.3227,0.2739,0.2644,0.216,0.1622,0.1498,0.1843,0.2792,0.3646,0.4346,0.4386,0.4368],"rank":[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]},"MOZ":{"esi":[0.0737,0.1023,0.1293,0.1467,0.1552,0.1561,0.1661,0.151,0.1359,0.1423,0.152,0.1762,0.1739,0.1852,0.1894,0.1961,0.2011,0.2481,0.276],"esi_sm":[0.1826,0.2031,0.2228,0.2868,0.3,0.3159,0.3214,0.3001,0.3598,0.3556,0.3941,0.3776,0.4213,0.4721,0.4823,0.5051,0.4834,0.7024,0.9058],"system":[0.0071,0.0766,0.1588,0.1992,0.2293,0.2353,0.2699,0.2673,0.2349,0.2475,0.2623,0.323,0.3318,0.3323,0.3344,0.3345,0.3371,0.4587,0.5222],"access":[0.0678,0.0683,0.0708,0.0734,0.0821,0.0924,0.102,0.1077,0.1136,0.1177,0.1233,0.1238,0.1329,0.1379,0.1454,0.1459,0.1498,0.1576,0.1623],"market":[0.2913,0.3017,0.2788,0.2746,0.2467,0.222,0.2029,0.1412,0.136,0.1735,0.2122,0.2385,0.2032,0.2499,0.2706,0.3025,0.3119,0.3133,0.3293],"env":[0.9327,0.9281,0.9262,0.9223,0.9225,0.918,0.9139,0.9088,0.9035,0.8958,0.8782,0.8637,0.8558,0.8567,0.8612,0.8567,0.8511,0.845,0.8413],"inst":[0.5051,0.5111,0.5188,0.5314,0.537,0.5334,0.5211,0.4879,0.4544,0.4096,0.358,0.3227,0.302,0.3121,0.3092,0.3052,0.3035,0.3077,0.3115],"inst_sm":[0.5883,0.6065,0.627,0.6663,0.6874,0.6777,0.6416,0.5417,0.4594,0.3674,0.2753,0.2212,0.1914,0.2004,0.2057,0.2126,0.2282,0.2378,0.2472],"POLSTAB":[0.3228,0.3344,0.4203,0.4554,0.4676,0.4506,0.3723,0.1652,-0.0575,-0.3598,-0.6498,-0.8438,-0.9494,-0.839,-0.9607,-1.102,-1.2686,-1.2638,-1.2671],"GE":[-0.6089,-0.5887,-0.5931,-0.5686,-0.5913,-0.6223,-0.6399,-0.6464,-0.678,-0.7365,-0.84,-0.9106,-0.9547,-0.9423,-0.8934,-0.8407,-0.7833,-0.7522,-0.7268],"RLAW":[-0.6269,-0.621,-0.6153,-0.6087,-0.5682,-0.556,-0.5554,-0.6663,-0.7427,-0.833,-0.9179,-0.9839,-1.05,-1.0492,-1.0724,-1.0683,-1.0522,-1.0354,-1.0255],"CORRUPT":[-0.5764,-0.5553,-0.5394,-0.4763,-0.451,-0.454,-0.5007,-0.556,-0.6139,-0.6841,-0.784,-0.8465,-0.8564,-0.8462,-0.8229,-0.8306,-0.8185,-0.8322,-0.8321],"rank":[25,25,25,24,24,25,25,25,26,26,26,26,26,26,25,25,26,26,24]},"NAM":{"esi":[0.613,0.6118,0.6251,0.6281,0.6385,0.6429,0.6535,0.664,0.665,0.6458,0.6196,0.6002,0.5985,0.598,0.5843,0.5668,0.5444,0.5419,0.5394],"esi_sm":[0.2096,0.2241,0.2911,0.3316,0.327,0.2858,0.2863,0.3251,0.343,0.3195,0.3445,0.3974,0.596,0.5874,0.5435,0.5153,0.5133,0.5632,0.5886],"system":[0.7878,0.7833,0.7863,0.7795,0.7926,0.8064,0.8215,0.8264,0.8243,0.8223,0.8203,0.8268,0.8313,0.8299,0.8147,0.7925,0.7694,0.7904,0.8025],"access":[0.4035,0.4111,0.4215,0.4286,0.4318,0.4332,0.4408,0.45,0.4609,0.468,0.4711,0.4789,0.4835,0.488,0.4821,0.4739,0.4678,0.4685,0.4705],"market":[0.8656,0.8424,0.8223,0.8142,0.8431,0.8899,0.9191,0.9405,0.944,0.8369,0.6846,0.5387,0.5131,0.51,0.4727,0.4317,0.3714,0.3219,0.2837],"env":[0.8218,0.8239,0.8165,0.8068,0.8053,0.812,0.8202,0.818,0.821,0.8196,0.8138,0.8071,0.8048,0.8009,0.7983,0.7946,0.7998,0.8024,0.8048],"inst":[0.771,0.7895,0.8489,0.8588,0.8555,0.8181,0.8241,0.8346,0.8321,0.8241,0.8197,0.8226,0.8197,0.8098,0.8032,0.7938,0.7919,0.7904,0.7931],"inst_sm":[0.3066,0.3417,0.4797,0.5051,0.4992,0.4037,0.4181,0.4441,0.4454,0.4318,0.4274,0.4357,0.4291,0.4066,0.395,0.3777,0.3744,0.3758,0.3861],"POLSTAB":[0.7041,0.809,1.0007,1.0498,0.9925,0.8961,0.9122,0.9495,0.8486,0.7643,0.6778,0.6822,0.6689,0.612,0.5755,0.52,0.5304,0.5412,0.5523],"GE":[0.1165,0.1427,0.2306,0.247,0.2337,0.1664,0.1764,0.2152,0.2447,0.2634,0.2374,0.2377,0.1772,0.146,0.0888,0.0639,0.0536,0.0464,0.0501],"RLAW":[0.0652,0.097,0.265,0.2836,0.3014,0.2098,0.2271,0.2621,0.2766,0.2544,0.3003,0.3236,0.3542,0.3225,0.3408,0.3427,0.3605,0.3985,0.4302],"CORRUPT":[0.1736,0.2196,0.3832,0.4075,0.4088,0.2876,0.3048,0.301,0.2956,0.2784,0.2707,0.2707,0.283,0.2936,0.296,0.2671,0.2347,0.1818,0.1626],"rank":[4,4,4,4,4,4,4,3,4,4,4,4,4,4,4,4,4,4,4]},"NER":{"esi":[0.2761,0.2795,0.2888,0.2887,0.2868,0.299,0.3112,0.3223,0.3199,0.3097,0.3032,0.2944,0.2889,0.2915,0.2979,0.3044,0.305,0.3265,0.3364],"esi_sm":[0.2997,0.3044,0.3034,0.3074,0.2981,0.3266,0.3392,0.3424,0.3619,0.3996,0.4368,0.4563,0.4201,0.4454,0.4524,0.4955,0.4882,0.542,0.573],"system":[0.5111,0.5147,0.5295,0.5275,0.5316,0.5429,0.5525,0.5512,0.5352,0.5257,0.5279,0.534,0.5421,0.5413,0.5487,0.5463,0.5501,0.6037,0.6322],"access":[0.0042,0.0082,0.0145,0.0187,0.0223,0.0261,0.0293,0.0318,0.0342,0.0379,0.0414,0.0448,0.047,0.05,0.053,0.0557,0.0583,0.0616,0.0639],"market":[0.5075,0.5119,0.5267,0.5194,0.4877,0.5,0.5311,0.5952,0.6257,0.59,0.5453,0.497,0.4693,0.4906,0.509,0.526,0.5064,0.5158,0.5202],"env":[0.8668,0.8658,0.8653,0.8605,0.8535,0.8442,0.8326,0.8291,0.8271,0.8326,0.8351,0.8413,0.8483,0.8511,0.8517,0.8463,0.8442,0.8424,0.8426],"inst":[0.4104,0.411,0.41,0.4062,0.4019,0.4133,0.4059,0.3963,0.3766,0.3793,0.3834,0.3782,0.37,0.366,0.3661,0.3761,0.3842,0.3834,0.3767],"inst_sm":[0.44,0.4397,0.4356,0.4261,0.4291,0.4711,0.4472,0.4233,0.38,0.3843,0.3887,0.3775,0.365,0.3663,0.3823,0.4186,0.4455,0.4408,0.4222],"POLSTAB":[-0.3567,-0.3911,-0.4525,-0.76,-0.9937,-1.0629,-1.0623,-1.116,-1.2153,-1.1858,-1.1121,-1.14,-1.2395,-1.3409,-1.4768,-1.5369,-1.5567,-1.5573,-1.5666],"GE":[-0.8055,-0.8037,-0.7867,-0.7466,-0.7145,-0.6872,-0.684,-0.6935,-0.7137,-0.7228,-0.7101,-0.7238,-0.7588,-0.8076,-0.7763,-0.715,-0.6442,-0.6375,-0.6343],"RLAW":[-0.6615,-0.6453,-0.6318,-0.5953,-0.5573,-0.4662,-0.5236,-0.5793,-0.6604,-0.6368,-0.643,-0.6609,-0.665,-0.6208,-0.5771,-0.5172,-0.4991,-0.5439,-0.6031],"CORRUPT":[-0.7867,-0.7782,-0.7801,-0.7009,-0.6666,-0.6408,-0.6529,-0.6399,-0.6541,-0.6631,-0.6787,-0.6761,-0.6489,-0.6162,-0.6078,-0.6038,-0.6094,-0.5764,-0.5743],"rank":[16,16,15,16,17,16,15,14,14,15,16,18,19,20,19,18,18,20,19]},"NGA":{"esi":[0.4357,0.4336,0.4254,0.4344,0.4304,0.4092,0.4011,0.3968,0.3995,0.3989,0.3807,0.3592,0.3266,0.3265,0.3465,0.3658,0.3595,0.3655,0.3633],"esi_sm":[0.0704,0.1081,0.1223,0.109,0.0832,0.1797,0.2628,0.3155,0.3162,0.3521,0.4169,0.4462,0.5559,0.5526,0.6116,0.704,0.7499,0.8134,0.8226],"system":[0.6362,0.639,0.6428,0.6519,0.6607,0.6396,0.6314,0.6306,0.6415,0.646,0.6444,0.657,0.6603,0.6584,0.654,0.6433,0.6382,0.6633,0.6769],"access":[0.1612,0.1651,0.1696,0.1728,0.1712,0.18,0.1865,0.1986,0.2004,0.2049,0.2162,0.2211,0.2319,0.2339,0.2459,0.2606,0.277,0.2928,0.2985],"market":[0.8264,0.8625,0.8534,0.9255,0.908,0.8679,0.8556,0.7942,0.7554,0.7088,0.5929,0.444,0.2489,0.2562,0.3536,0.4228,0.3512,0.2983,0.2535],"env":[0.6819,0.7143,0.7489,0.7683,0.7718,0.7859,0.801,0.7912,0.7712,0.7624,0.7665,0.7792,0.78,0.7816,0.7778,0.7631,0.7555,0.7546,0.7568],"inst":[0.193,0.1944,0.2084,0.2005,0.1879,0.1659,0.1682,0.1724,0.1665,0.178,0.1879,0.2094,0.2037,0.2003,0.1998,0.2114,0.2217,0.2366,0.2395],"inst_sm":[0.4006,0.4024,0.4401,0.4176,0.3914,0.339,0.3455,0.3554,0.3458,0.3707,0.3881,0.4414,0.4328,0.4291,0.4278,0.451,0.4746,0.5112,0.5188],"POLSTAB":[-1.8503,-1.9049,-1.9696,-1.9564,-2.0221,-2.054,-2.0699,-2.029,-2.0869,-2.0468,-1.9753,-1.9308,-1.9894,-2.0091,-1.9742,-1.8709,-1.8194,-1.7782,-1.7737],"GE":[-0.9323,-0.9656,-0.9957,-1.0733,-1.1177,-1.156,-1.0895,-1.0338,-1.063,-1.0616,-1.1023,-1.0527,-1.0933,-1.1242,-1.1584,-1.128,-1.0708,-0.9721,-0.9447],"RLAW":[-1.2148,-1.1636,-1.0583,-1.0852,-1.1177,-1.1646,-1.1588,-1.1461,-1.1051,-1.0533,-1.026,-0.9697,-0.9479,-0.9144,-0.8994,-0.8838,-0.8756,-0.8908,-0.9008],"CORRUPT":[-1.1536,-1.1247,-1.0314,-1.0033,-0.9981,-1.0943,-1.1389,-1.1974,-1.229,-1.2024,-1.1418,-1.0802,-1.0761,-1.0987,-1.1052,-1.111,-1.1165,-1.0906,-1.0853],"rank":[7,7,8,9,9,11,11,11,10,10,11,12,14,15,13,13,13,14,17]},"RWA":{"esi":[0.1715,0.186,0.2045,0.2087,0.2106,0.2143,0.2266,0.2402,0.2554,0.2614,0.2695,0.2724,0.2837,0.2963,0.3162,0.3265,0.3307,0.3632,0.3838],"esi_sm":[0.1096,0.1213,0.1208,0.1174,0.1491,0.2042,0.2854,0.3379,0.396,0.364,0.3788,0.3974,0.4428,0.489,0.5384,0.6064,0.6634,0.8703,1.0],"system":[0.2797,0.2923,0.3203,0.3416,0.3547,0.3574,0.3427,0.357,0.3719,0.4095,0.4244,0.4398,0.4522,0.4649,0.4724,0.4713,0.4721,0.5362,0.5735],"access":[0.0,0.006,0.0077,0.013,0.0092,0.0156,0.0185,0.026,0.038,0.0455,0.0647,0.0842,0.1056,0.1299,0.1472,0.1646,0.1748,0.2045,0.2183],"market":[0.447,0.4502,0.4236,0.3814,0.3561,0.3411,0.4023,0.4117,0.4282,0.3573,0.3252,0.2541,0.2364,0.2428,0.3231,0.3552,0.3528,0.349,0.3651],"env":[0.912,0.9142,0.9199,0.9243,0.9311,0.9338,0.938,0.9362,0.9371,0.9341,0.9282,0.9182,0.9092,0.9061,0.9093,0.9117,0.9117,0.9085,0.9069],"inst":[0.4232,0.4712,0.553,0.5784,0.6058,0.6321,0.6707,0.6954,0.7199,0.7358,0.7472,0.7604,0.7715,0.7726,0.7717,0.7803,0.7907,0.8059,0.8113],"inst_sm":[0.0,0.0396,0.1288,0.1612,0.2016,0.2461,0.3195,0.3739,0.4459,0.4866,0.5229,0.5461,0.5785,0.5781,0.5764,0.6078,0.6462,0.7018,0.722],"POLSTAB":[-0.8421,-0.6815,-0.4573,-0.3983,-0.3689,-0.3187,-0.2266,-0.1729,-0.2183,-0.1406,-0.1258,0.0048,0.0378,0.079,0.0761,0.0661,0.0747,0.0876,0.0954],"GE":[-0.6414,-0.5095,-0.2823,-0.2494,-0.2203,-0.1532,-0.0937,-0.0499,-0.0605,-0.0755,-0.062,0.0151,0.0905,0.117,0.1487,0.198,0.2444,0.2826,0.3102],"RLAW":[-0.7692,-0.706,-0.5759,-0.5188,-0.4358,-0.3797,-0.2952,-0.2338,-0.1091,-0.0126,0.0685,0.0832,0.1066,0.0954,0.0826,0.1035,0.1319,0.175,0.1764],"CORRUPT":[-0.4173,-0.2759,-0.0299,0.0748,0.1941,0.2788,0.4292,0.5158,0.6537,0.6666,0.6645,0.6076,0.5867,0.5543,0.5283,0.5407,0.5541,0.602,0.6165],"rank":[22,22,21,22,22,21,20,20,19,19,19,19,20,18,17,15,16,15,13]},"SEN":{"esi":[0.4837,0.4769,0.4659,0.4513,0.4331,0.4211,0.4178,0.4352,0.4627,0.4809,0.485,0.4699,0.458,0.4494,0.4542,0.4586,0.4542,0.4547,0.4533],"esi_sm":[0.291,0.2798,0.2754,0.2626,0.2125,0.1793,0.1554,0.1677,0.1993,0.2698,0.3812,0.4769,0.5659,0.6005,0.6225,0.6554,0.6338,0.6741,0.6894],"system":[0.5969,0.5965,0.5913,0.5759,0.5674,0.5654,0.5795,0.5952,0.6081,0.6128,0.6159,0.6164,0.6159,0.5935,0.5972,0.5988,0.6209,0.6263,0.6318],"access":[0.2948,0.294,0.2953,0.2987,0.3073,0.314,0.3148,0.3122,0.3156,0.3185,0.3271,0.3273,0.3349,0.3451,0.3527,0.361,0.3652,0.3857,0.3945],"market":[0.6403,0.6231,0.5928,0.5572,0.4885,0.4414,0.3747,0.3969,0.4743,0.5302,0.5186,0.4317,0.3511,0.3202,0.3247,0.3172,0.2315,0.1804,0.1431],"env":[0.7174,0.7146,0.7133,0.7157,0.7208,0.723,0.7211,0.7154,0.7123,0.7029,0.6956,0.6917,0.6896,0.6921,0.6938,0.6887,0.6814,0.6778,0.677],"inst":[0.5994,0.5764,0.5517,0.5363,0.518,0.4977,0.5144,0.5509,0.5905,0.6048,0.6083,0.6033,0.6041,0.6212,0.6289,0.6372,0.637,0.6461,0.652],"inst_sm":[0.439,0.3824,0.3264,0.2916,0.2574,0.2188,0.2451,0.3089,0.4016,0.4432,0.4643,0.4408,0.4373,0.4717,0.4966,0.5332,0.547,0.5807,0.5974],"POLSTAB":[-0.2342,-0.2377,-0.2193,-0.1996,-0.2572,-0.3012,-0.2689,-0.1499,-0.1224,-0.1264,-0.1815,-0.134,-0.1297,-0.0418,-0.071,-0.0951,-0.1602,-0.1587,-0.1481],"GE":[-0.3101,-0.3698,-0.3567,-0.4191,-0.4539,-0.5475,-0.5212,-0.4653,-0.4347,-0.4379,-0.4636,-0.4505,-0.3992,-0.2764,-0.1745,-0.0565,0.0015,0.0447,0.0547],"RLAW":[-0.1057,-0.1504,-0.2472,-0.2958,-0.3484,-0.4069,-0.3785,-0.3248,-0.198,-0.1572,-0.1197,-0.1516,-0.1733,-0.2038,-0.2535,-0.3115,-0.3294,-0.3137,-0.2712],"CORRUPT":[-0.2042,-0.3076,-0.4625,-0.5015,-0.5439,-0.5451,-0.4678,-0.3171,-0.1297,-0.0331,0.0218,-0.0358,-0.062,-0.0551,-0.0194,0.0105,0.0073,0.029,0.0223],"rank":[6,6,6,7,8,8,9,8,8,7,7,7,7,7,7,7,7,8,8]},"ZAF":{"esi":[0.9921,1.0,0.9894,0.9739,0.9616,0.9649,0.9772,0.9791,0.9898,0.9973,0.9757,0.9592,0.9456,0.9548,0.9522,0.942,0.9349,0.9252,0.9217],"esi_sm":[0.2838,0.3222,0.3719,0.3883,0.3811,0.3298,0.3148,0.3879,0.4701,0.4815,0.4103,0.4311,0.555,0.5598,0.4982,0.4256,0.3488,0.3216,0.3105],"system":[0.9897,0.9982,1.0,0.971,0.9608,0.9709,0.9971,0.9801,0.9682,0.9604,0.9593,0.9519,0.9445,0.9467,0.9344,0.9157,0.9057,0.8958,0.8922],"access":[0.9641,0.9757,0.9865,0.9875,0.9861,0.9923,0.9999,1.0,0.9952,0.9904,0.9833,0.9787,0.9772,0.9756,0.9699,0.9652,0.9572,0.9485,0.9402],"market":[0.6087,0.6185,0.5457,0.5219,0.5041,0.5436,0.5734,0.6159,0.6726,0.7099,0.5712,0.4735,0.362,0.3604,0.3419,0.3147,0.3445,0.3674,0.397],"env":[0.165,0.1574,0.1513,0.146,0.156,0.1791,0.1835,0.1819,0.1597,0.1422,0.1217,0.0973,0.0629,0.0285,0.0091,0.0,0.0103,0.0262,0.0362],"inst":[0.786,0.7746,0.7595,0.7422,0.7321,0.7263,0.7125,0.7105,0.7013,0.6953,0.6873,0.6689,0.6578,0.6453,0.6443,0.6406,0.6206,0.6042,0.5919],"inst_sm":[0.6966,0.6368,0.5723,0.5224,0.4986,0.4842,0.4483,0.4496,0.4326,0.4161,0.3932,0.3469,0.3211,0.2972,0.2945,0.2964,0.2695,0.2634,0.2436],"POLSTAB":[-0.0575,0.0334,0.104,0.0501,-0.0315,-0.04,-0.0103,-0.0159,-0.0727,-0.1377,-0.172,-0.2181,-0.2238,-0.2685,-0.2579,-0.429,-0.5617,-0.6993,-0.6735],"GE":[0.4461,0.3919,0.3136,0.3088,0.2782,0.24,0.1931,0.2312,0.2137,0.1861,0.1179,0.0865,0.0919,0.1008,0.0927,0.0348,-0.0442,-0.1454,-0.183],"RLAW":[0.0847,0.0565,0.0623,0.026,0.0585,0.0999,0.104,0.1165,0.125,0.1021,0.0715,-0.0323,-0.1115,-0.1888,-0.2181,-0.1225,-0.0461,0.064,0.0635],"CORRUPT":[0.4311,0.3533,0.2433,0.159,0.1149,0.0622,-0.041,-0.1088,-0.1492,-0.1114,-0.0597,-0.0605,-0.0825,-0.0986,-0.0759,-0.0416,-0.1412,-0.2163,-0.3074],"rank":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]},"SDN":{"esi":[0.2969,0.3086,0.3219,0.3259,0.3187,0.3157,0.3092,0.2888,0.2732,0.2825,0.3042,0.329,0.3278,0.3268,0.3294,0.3261,0.3333,0.3581,0.3737],"esi_sm":[0.0,0.0344,0.0911,0.1209,0.1158,0.1311,0.1636,0.2025,0.2514,0.3387,0.4672,0.5734,0.6108,0.6402,0.6703,0.7033,0.7548,0.8289,0.8939],"system":[0.57,0.5756,0.583,0.5869,0.5909,0.5887,0.5833,0.5532,0.5155,0.5077,0.5194,0.5446,0.5443,0.5395,0.533,0.5255,0.5214,0.5895,0.6258],"access":[0.1573,0.1637,0.1618,0.1718,0.1904,0.2267,0.2551,0.277,0.2983,0.3192,0.342,0.3657,0.3873,0.4065,0.4241,0.4417,0.4572,0.4731,0.4809],"market":[0.585,0.6184,0.66,0.6718,0.63,0.5881,0.5345,0.4428,0.396,0.4219,0.4641,0.4844,0.4302,0.3916,0.3908,0.375,0.4267,0.4475,0.4767],"env":[0.8407,0.8345,0.8229,0.8226,0.8347,0.8493,0.8497,0.8451,0.8395,0.8324,0.8141,0.7993,0.7935,0.7957,0.7995,0.8049,0.8105,0.7964,0.7928],"inst":[0.091,0.0917,0.0911,0.0807,0.0726,0.08,0.0715,0.0697,0.0637,0.0637,0.0553,0.0656,0.0738,0.0942,0.1054,0.1038,0.0905,0.0306,0.002],"inst_sm":[0.4479,0.461,0.4773,0.4608,0.4426,0.4647,0.4206,0.4005,0.386,0.3834,0.3681,0.3867,0.4029,0.4475,0.4746,0.4675,0.4351,0.3048,0.2511],"POLSTAB":[-2.0562,-2.1584,-2.3291,-2.4984,-2.5992,-2.6118,-2.4829,-2.3255,-2.2722,-2.2371,-2.2831,-2.1526,-2.0415,-1.8299,-1.7251,-1.7803,-1.9072,-2.1772,-2.2719],"GE":[-1.2855,-1.2344,-1.1928,-1.2313,-1.3134,-1.3581,-1.4091,-1.4453,-1.4928,-1.519,-1.5432,-1.5156,-1.5548,-1.5878,-1.6088,-1.6199,-1.6291,-1.7752,-1.8317],"RLAW":[-1.513,-1.4836,-1.4153,-1.38,-1.3508,-1.3029,-1.2941,-1.2761,-1.2323,-1.2287,-1.2281,-1.2121,-1.1807,-1.1443,-1.1321,-1.1587,-1.1879,-1.3842,-1.4671],"CORRUPT":[-1.2895,-1.3029,-1.3162,-1.3025,-1.2582,-1.1839,-1.3016,-1.3991,-1.4851,-1.4841,-1.5081,-1.5404,-1.5261,-1.4738,-1.4268,-1.3664,-1.3695,-1.3972,-1.4579],"rank":[13,14,14,14,14,15,16,18,18,18,15,14,13,14,15,16,15,16,14]},"TZA":{"esi":[0.1809,0.1889,0.1954,0.2114,0.217,0.2122,0.2133,0.2089,0.2167,0.1934,0.2215,0.247,0.2946,0.2999,0.297,0.3007,0.303,0.3345,0.3491],"esi_sm":[0.193,0.1901,0.1855,0.1589,0.149,0.2121,0.2454,0.2688,0.2563,0.2648,0.3497,0.4195,0.5617,0.5495,0.6214,0.6521,0.692,0.766,0.8564],"system":[0.3472,0.361,0.3756,0.4026,0.4176,0.4081,0.4141,0.4201,0.447,0.4604,0.4657,0.4735,0.4872,0.5024,0.4882,0.4894,0.4915,0.5763,0.6101],"access":[0.0306,0.033,0.0307,0.0266,0.0262,0.0303,0.0373,0.0406,0.0541,0.0698,0.0925,0.1056,0.1191,0.128,0.1406,0.1536,0.1672,0.1815,0.1887],"market":[0.1956,0.2178,0.2308,0.2952,0.3008,0.2793,0.2484,0.1952,0.1791,0.0,0.1051,0.1969,0.4231,0.4178,0.4153,0.3956,0.3592,0.313,0.2987],"env":[0.8916,0.8984,0.9042,0.913,0.9092,0.8978,0.8798,0.8643,0.8617,0.8594,0.8589,0.8532,0.8524,0.8499,0.8503,0.8469,0.8456,0.8425,0.8413],"inst":[0.5161,0.5212,0.53,0.5243,0.5146,0.5017,0.4846,0.469,0.4548,0.4531,0.4625,0.4694,0.4628,0.4523,0.4497,0.4639,0.4879,0.5204,0.5387],"inst_sm":[0.5052,0.5165,0.5267,0.4938,0.4572,0.4211,0.3836,0.3534,0.3341,0.3419,0.3681,0.3771,0.3607,0.3347,0.327,0.3532,0.4078,0.4852,0.536],"POLSTAB":[-0.4705,-0.4427,-0.3245,-0.1756,-0.0418,0.0265,0.0139,-0.0449,-0.2359,-0.3942,-0.4896,-0.4806,-0.533,-0.513,-0.4832,-0.4016,-0.3589,-0.2162,-0.1565],"GE":[-0.4448,-0.438,-0.4686,-0.5274,-0.593,-0.6364,-0.661,-0.6917,-0.6908,-0.6747,-0.6394,-0.6475,-0.6895,-0.772,-0.791,-0.7473,-0.616,-0.5213,-0.4577],"RLAW":[-0.3655,-0.3699,-0.3929,-0.4048,-0.4406,-0.4938,-0.513,-0.51,-0.472,-0.4247,-0.3976,-0.4208,-0.48,-0.5371,-0.5853,-0.5782,-0.543,-0.4624,-0.4179],"CORRUPT":[-0.4181,-0.3906,-0.3269,-0.4,-0.4688,-0.5312,-0.6368,-0.7164,-0.7691,-0.7509,-0.6676,-0.5761,-0.4981,-0.4612,-0.4341,-0.407,-0.3851,-0.3565,-0.3374],"rank":[21,21,22,21,21,22,21,21,21,22,22,22,17,17,20,20,19,18,18]},"TGO":{"esi":[0.1538,0.1611,0.1735,0.1898,0.2039,0.2183,0.2003,0.1894,0.1864,0.2239,0.2516,0.26,0.24,0.2251,0.2262,0.2494,0.2831,0.3423,0.3686],"esi_sm":[0.2062,0.1919,0.2236,0.2933,0.3526,0.3883,0.3172,0.2978,0.2588,0.24,0.2739,0.3075,0.3504,0.4051,0.506,0.5847,0.6601,0.8254,0.9095],"system":[0.3502,0.3492,0.3536,0.3313,0.3185,0.3081,0.3309,0.3592,0.3919,0.417,0.4288,0.4395,0.4437,0.446,0.4232,0.4002,0.4066,0.5201,0.5893],"access":[0.0841,0.0881,0.096,0.1053,0.1088,0.1216,0.1315,0.1454,0.1569,0.1646,0.1759,0.1812,0.1916,0.2027,0.213,0.2242,0.2339,0.2439,0.2486],"market":[0.2484,0.2746,0.2893,0.3407,0.3803,0.4427,0.3265,0.2095,0.1235,0.2441,0.3319,0.3368,0.1994,0.0972,0.095,0.2234,0.3561,0.4454,0.4526],"env":[0.8873,0.8894,0.8884,0.8595,0.8333,0.8221,0.8421,0.8487,0.8587,0.8537,0.8575,0.8492,0.8454,0.8401,0.8292,0.8258,0.8211,0.824,0.8258],"inst":[0.2347,0.249,0.2819,0.2978,0.3077,0.3078,0.304,0.2994,0.309,0.329,0.3636,0.362,0.3599,0.3498,0.3681,0.391,0.4114,0.4252,0.428],"inst_sm":[0.201,0.2151,0.2647,0.2926,0.3095,0.3077,0.2986,0.2891,0.3074,0.3485,0.4301,0.4401,0.4565,0.4576,0.5155,0.5896,0.6681,0.7322,0.7594],"POLSTAB":[-0.9838,-0.7696,-0.3459,-0.2253,-0.1713,-0.1692,-0.2428,-0.3009,-0.3024,-0.251,-0.1915,-0.4272,-0.6452,-0.8896,-0.895,-0.8316,-0.7915,-0.8127,-0.8711],"GE":[-1.4751,-1.4916,-1.5,-1.4543,-1.4074,-1.3709,-1.351,-1.3195,-1.2844,-1.2609,-1.2039,-1.1702,-1.1261,-1.0774,-0.9322,-0.7964,-0.6874,-0.6366,-0.6118],"RLAW":[-1.0066,-0.9812,-0.9041,-0.8866,-0.8884,-0.9085,-0.9258,-0.9421,-0.9303,-0.8873,-0.7767,-0.7342,-0.6676,-0.6469,-0.628,-0.6169,-0.6035,-0.5546,-0.5389],"CORRUPT":[-0.9617,-0.9736,-1.0075,-1.0018,-0.9918,-1.0088,-1.0006,-1.0231,-0.981,-0.8967,-0.7878,-0.7328,-0.7309,-0.7436,-0.7418,-0.7224,-0.6862,-0.6492,-0.6284],"rank":[23,23,23,23,23,20,22,22,22,21,20,21,22,23,23,21,21,17,15]},"UGA":{"esi":[0.1235,0.1216,0.1341,0.1397,0.1524,0.1594,0.1713,0.1713,0.167,0.1646,0.178,0.1886,0.1941,0.1943,0.2044,0.2166,0.2174,0.2627,0.2822],"esi_sm":[0.1562,0.1779,0.2199,0.2332,0.2388,0.2785,0.3323,0.3628,0.3514,0.337,0.3859,0.4269,0.4671,0.4777,0.5035,0.5462,0.5865,0.7098,0.8005],"system":[0.33,0.34,0.3601,0.373,0.3818,0.3816,0.382,0.3739,0.3733,0.3753,0.3775,0.3794,0.3839,0.3938,0.3982,0.3982,0.3939,0.5005,0.5553],"access":[0.0064,0.0139,0.0231,0.025,0.0223,0.0209,0.0346,0.0369,0.0446,0.0426,0.0595,0.0751,0.1049,0.1238,0.1367,0.1415,0.1495,0.1621,0.1675],"market":[0.1953,0.1271,0.1062,0.1037,0.1629,0.2022,0.2629,0.2889,0.2713,0.256,0.3014,0.331,0.3059,0.2681,0.3034,0.3702,0.3682,0.3963,0.3909],"env":[0.9625,0.9555,0.944,0.9363,0.9312,0.928,0.9375,0.9446,0.9499,0.9479,0.9485,0.9508,0.9483,0.9477,0.9473,0.9482,0.9485,0.9481,0.9492],"inst":[0.3966,0.4118,0.4295,0.4219,0.4105,0.4065,0.4109,0.4103,0.4047,0.4019,0.4056,0.4144,0.4169,0.4109,0.4052,0.4023,0.4065,0.4076,0.4109],"inst_sm":[0.4191,0.4461,0.4752,0.4475,0.419,0.4111,0.4196,0.4146,0.4009,0.3929,0.4008,0.4159,0.4223,0.4066,0.3957,0.3918,0.4007,0.3997,0.4036],"POLSTAB":[-1.2788,-1.158,-0.9775,-0.928,-0.956,-0.9895,-0.9485,-0.8946,-0.8829,-0.8615,-0.8213,-0.6976,-0.6633,-0.6553,-0.7357,-0.8144,-0.8199,-0.7814,-0.7033],"GE":[-0.5766,-0.535,-0.5511,-0.581,-0.6211,-0.6008,-0.576,-0.5891,-0.5828,-0.5759,-0.5827,-0.6136,-0.6525,-0.658,-0.6525,-0.6219,-0.6074,-0.5851,-0.5773],"RLAW":[-0.4338,-0.4084,-0.3427,-0.3714,-0.3844,-0.3894,-0.3709,-0.3541,-0.3658,-0.3851,-0.3598,-0.3347,-0.3036,-0.3286,-0.3374,-0.3534,-0.363,-0.4061,-0.4245],"CORRUPT":[-0.8106,-0.8157,-0.8178,-0.8586,-0.8911,-0.9232,-0.9538,-0.9981,-1.0519,-1.0785,-1.0886,-1.0792,-1.0691,-1.0984,-1.0972,-1.0896,-1.0519,-1.0441,-1.0519],"rank":[24,24,24,25,25,24,24,24,24,25,25,24,24,24,24,24,24,23,23]},"ZWE":{"esi":[0.2927,0.2909,0.2766,0.2857,0.2942,0.3166,0.3173,0.3147,0.2984,0.305,0.3019,0.3049,0.2923,0.293,0.2994,0.3008,0.2971,0.3211,0.3298],"esi_sm":[0.2989,0.2946,0.2734,0.2794,0.2876,0.348,0.3482,0.3472,0.3117,0.3063,0.3365,0.4189,0.5092,0.5167,0.5299,0.5164,0.4901,0.5687,0.6105],"system":[0.5078,0.5049,0.4922,0.4922,0.5032,0.5236,0.5424,0.5494,0.5554,0.5565,0.5623,0.5703,0.5753,0.5771,0.5756,0.575,0.5748,0.6242,0.6497],"access":[0.2217,0.2221,0.2237,0.2307,0.2317,0.2292,0.2285,0.2299,0.2235,0.2101,0.2118,0.2267,0.242,0.2485,0.2601,0.2652,0.2699,0.2821,0.2914],"market":[0.4155,0.4183,0.3889,0.4803,0.531,0.5686,0.4929,0.4286,0.3558,0.3923,0.3584,0.3548,0.2587,0.2496,0.2897,0.3205,0.3113,0.3097,0.2896],"env":[0.7573,0.76,0.7721,0.7878,0.7971,0.7739,0.7629,0.759,0.7839,0.7867,0.7934,0.8042,0.807,0.803,0.8078,0.8199,0.8332,0.8278,0.827],"inst":[0.116,0.1134,0.108,0.0878,0.0789,0.0869,0.1106,0.1369,0.1613,0.1821,0.197,0.2027,0.2036,0.1973,0.189,0.1833,0.1905,0.2036,0.209],"inst_sm":[0.3243,0.3191,0.3021,0.2646,0.2478,0.2572,0.2964,0.3467,0.4021,0.4562,0.4982,0.5137,0.5185,0.5113,0.5003,0.4926,0.5141,0.5508,0.5671],"POLSTAB":[-1.0998,-1.1033,-1.0849,-1.1633,-1.1612,-1.0722,-0.9427,-0.7966,-0.7194,-0.6662,-0.6512,-0.6501,-0.6841,-0.7916,-0.9057,-0.9835,-0.9674,-0.928,-0.9147],"GE":[-1.3094,-1.3058,-1.3685,-1.466,-1.546,-1.5041,-1.4443,-1.3677,-1.3212,-1.2798,-1.2633,-1.2629,-1.279,-1.2962,-1.3169,-1.3145,-1.2947,-1.2374,-1.2108],"RLAW":[-1.7933,-1.7984,-1.7839,-1.8234,-1.8331,-1.8339,-1.7539,-1.6706,-1.5532,-1.4562,-1.3908,-1.3754,-1.36,-1.3332,-1.3138,-1.3102,-1.2855,-1.2654,-1.2571],"CORRUPT":[-1.3438,-1.3641,-1.3755,-1.3705,-1.36,-1.3856,-1.3936,-1.4092,-1.4022,-1.3875,-1.3437,-1.3082,-1.2777,-1.2783,-1.2818,-1.2921,-1.282,-1.2661,-1.2606],"rank":[14,15,16,17,16,14,14,15,17,16,17,17,18,19,18,19,20,21,20]}}};
+const YEARS = D.years, LAST = YEARS[YEARS.length-1], FIRST = YEARS[0];
+const BYISO = Object.fromEntries(D.countries.map(c=>[c.iso,c]));
+const VARS = {
+  esi:     {label:"Energy Security Index", short:"Index", group:"Composite index", scale:"0 to 1", def:"Composite Energy Security Index, main specification (z-score; identical to min-max). First principal component of the five dimension indices, rescaled to 0-1. Higher is more secure."},
+  esi_sm:  {label:"Energy Security Index (softmax)", short:"Index (softmax)", group:"Composite index", scale:"0 to 1", def:"Composite index computed with softmax normalisation, a robustness check. Softmax is applied within each country's own time series, so it reflects a country's trajectory rather than its position relative to other countries."},
+  system:  {label:"Energy system adequacy, reliability and efficiency", short:"System", group:"Dimensions", scale:"0 to 1", def:"Dimension index: first principal component of electric power consumption per capita, transmission and distribution losses (reversed) and energy use per capita (reversed), rescaled to 0-1."},
+  access:  {label:"Energy access and affordability", short:"Access", group:"Dimensions", scale:"0 to 1", def:"Dimension index: first principal component of access to clean cooking, access to electricity and electric power consumption per capita, rescaled to 0-1."},
+  market:  {label:"Energy market and external vulnerability", short:"Market", group:"Dimensions", scale:"0 to 1", def:"Dimension index: first principal component of trade openness, fossil-fuel dependence, oil-shock exposure, energy use per capita, fossil fuel consumption and fuel imports (all reversed), rescaled to 0-1."},
+  env:     {label:"Environmental sustainability and transition readiness", short:"Environment", group:"Dimensions", scale:"0 to 1", def:"Dimension index: first principal component of CO2 emissions, CO2 per capita and CO2 intensity (reversed) and renewable energy and electricity shares, rescaled to 0-1."},
+  inst:    {label:"Political, institutional and socioeconomic environment", short:"Institutions", group:"Dimensions", scale:"0 to 1", def:"Dimension index: first principal component of the four governance indicators, rescaled to 0-1 (z-score specification)."},
+  inst_sm: {label:"Institutions dimension (softmax)", short:"Institutions (softmax)", group:"Dimensions", scale:"0 to 1", def:"Institutions dimension index computed with softmax normalisation, a robustness check."},
+  POLSTAB: {label:"Political stability and absence of violence", short:"Political stability", group:"Governance indicators", scale:"about -2.5 to 2.5", def:"World Bank Worldwide Governance Indicators estimate."},
+  GE:      {label:"Government effectiveness", short:"Govt effectiveness", group:"Governance indicators", scale:"about -2.5 to 2.5", def:"World Bank Worldwide Governance Indicators estimate."},
+  RLAW:    {label:"Rule of law", short:"Rule of law", group:"Governance indicators", scale:"about -2.5 to 2.5", def:"World Bank Worldwide Governance Indicators estimate."},
+  CORRUPT: {label:"Control of corruption", short:"Control of corruption", group:"Governance indicators", scale:"about -2.5 to 2.5", def:"World Bank Worldwide Governance Indicators estimate."}
+};
+const DIMS = ["system","access","market","env","inst"];
+const DIMCOL = {system:"--c-system",access:"--c-access",market:"--c-market",env:"--c-env",inst:"--c-inst"};
+const val = (iso,k,y) => D.values[iso][k][YEARS.indexOf(y)];
+const series = (iso,k) => D.values[iso][k];
+const avgSeries = (k,isos=D.countries.map(c=>c.iso)) => YEARS.map((_,i)=>isos.reduce((s,c)=>s+D.values[c][k][i],0)/isos.length);
+const fmt = (v,k) => v==null?"":(VARS[k]&&VARS[k].scale.startsWith("0")? v.toFixed(3) : v.toFixed(2));
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// ===== Tile map (home) =====
+const TILES = [
+ ["MAR","Morocco",3,0],["DZA","Algeria",4,0],["TUN","Tunisia",5,0],["LBY","Libya",6,0],["EGY","Egypt",7,0],
+ ["CPV","Cabo Verde",0,1],["MRT","Mauritania",3,1],["MLI","Mali",4,1],["NER","Niger",5,1],["TCD","Chad",6,1],["SDN","Sudan",7,1],["ERI","Eritrea",8,1],["DJI","Djibouti",9,1],
+ ["GMB","Gambia",1,2],["SEN","Senegal",2,2],["GIN","Guinea",3,2],["BFA","Burkina Faso",4,2],["BEN","Benin",5,2],["NGA","Nigeria",6,2],["CAF","Central African Rep.",7,2],["SSD","South Sudan",8,2],["ETH","Ethiopia",9,2],
+ ["GNB","Guinea-Bissau",1,3],["SLE","Sierra Leone",2,3],["LBR","Liberia",3,3],["CIV","Côte d'Ivoire",4,3],["GHA","Ghana",5,3],["TGO","Togo",6,3],["CMR","Cameroon",7,3],["COD","DR Congo",8,3],["UGA","Uganda",9,3],["KEN","Kenya",10,3],["SOM","Somalia",11,3],
+ ["STP","São Tomé & Príncipe",5,4],["GNQ","Equatorial Guinea",6,4],["GAB","Gabon",7,4],["COG","Congo",8,4],["RWA","Rwanda",9,4],["TZA","Tanzania",10,4],["SYC","Seychelles",11,4],
+ ["AGO","Angola",7,5],["ZMB","Zambia",8,5],["BDI","Burundi",9,5],["MWI","Malawi",10,5],["COM","Comoros",11,5],
+ ["NAM","Namibia",7,6],["BWA","Botswana",8,6],["ZWE","Zimbabwe",9,6],["MOZ","Mozambique",10,6],["MDG","Madagascar",11,6],
+ ["ZAF","South Africa",8,7],["SWZ","Eswatini",9,7],["MUS","Mauritius",11,7],["LSO","Lesotho",8,8]
+];
+const shade = v => v==null?"var(--nodata)":v<.2?"var(--s1)":v<.3?"var(--s2)":v<.4?"var(--s3)":v<.6?"var(--s4)":"var(--s5)";
+let year = LAST, sel = "ZAF";
+const ysel = document.getElementById("year");
+YEARS.slice().reverse().forEach(y=>ysel.add(new Option(y,y)));
+ysel.onchange = ()=>{year=+ysel.value;paint();detail()};
+const tiles = document.getElementById("tiles");
+const SHOWN = TILES.filter(t=>BYISO[t[0]]);
+const C0=Math.min(...SHOWN.map(t=>t[2])), R0=Math.min(...SHOWN.map(t=>t[3]));
+tiles.style.gridTemplateColumns = `repeat(${Math.max(...SHOWN.map(t=>t[2]))-C0+1},1fr)`;
+tiles.style.gridTemplateRows = `repeat(${Math.max(...SHOWN.map(t=>t[3]))-R0+1},auto)`;
+SHOWN.forEach(([iso,name,col,row])=>{ col-=C0; row-=R0;
+  const b=document.createElement("button");
+  b.className="tile";b.textContent=iso;b.dataset.iso=iso;b.title=name;
+  b.style.gridColumn=col+1;b.style.gridRow=row+1;b.style.animationDelay=(row*45+col*12)+"ms";
+  b.onclick=()=>{sel=iso;paint();detail()};
+  tiles.appendChild(b);
+});
+function paint(){
+  tiles.querySelectorAll(".tile").forEach(t=>{
+    const iso=t.dataset.iso, inData=!!BYISO[iso], v=inData?val(iso,"esi",year):null;
+    t.style.background=shade(v);
+    t.classList.toggle("dark", v!=null && v>=.4);
+    t.classList.toggle("off", !inData);
+    t.setAttribute("aria-pressed", iso===sel);
+    const name=TILES.find(x=>x[0]===iso)[1];
+    t.setAttribute("aria-label", `${name}: ${v==null?"not covered":v.toFixed(3)}`);
+  });
+}
+function detail(){
+  const el=document.getElementById("detail"), name=TILES.find(x=>x[0]===sel)[1];
+  if(!BYISO[sel]){el.innerHTML=`<div class="score muted-score">&ndash;</div><div class="cname">${esc(name)}</div><div class="meta">Not covered by the index.</div>`;return}
+  const s=series(sel,"esi"), W=400,H=70,mn=Math.min(...s)-.02,mx=Math.max(...s)+.02;
+  const pts=s.map((v,i)=>`${(i/(s.length-1)*W).toFixed(1)},${(H-(v-mn)/(mx-mn)*H).toFixed(1)}`).join(" ");
+  const yi=YEARS.indexOf(year), cx=yi/(s.length-1)*W, cy=H-(s[yi]-mn)/(mx-mn)*H;
+  el.innerHTML=`<div class="score">${s[yi].toFixed(3)}</div>
+   <div class="cname">${esc(BYISO[sel].name)}</div>
+   <div class="meta">Rank ${val(sel,"rank",year)} of ${D.countries.length} in ${year}. <a href="#dashboard" data-open="${sel}">Open in dashboard</a></div>
+   <svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Index for ${esc(BYISO[sel].name)} from ${FIRST} to ${LAST}">
+     <polyline points="${pts}" fill="none" stroke="var(--s4)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+     <circle cx="${cx}" cy="${cy}" r="3" fill="var(--sun)"/>
+   </svg>`;
+  el.querySelector("[data-open]").onclick=()=>{dc.value=sel;fillCmp();};
+}
+
+// ===== Dashboard =====
+const dc=document.getElementById("d-country"), dv=document.getElementById("d-var"), dcmp=document.getElementById("d-cmp");
+const dyp=document.getElementById("d-year-prof");
+const sortedCountries = D.countries.slice().sort((a,b)=>a.name.localeCompare(b.name));
+sortedCountries.forEach(c=>dc.add(new Option(c.name,c.iso)));
+dc.value="ZAF";
+const groups={};
+Object.entries(VARS).forEach(([k,v])=>{(groups[v.group]=groups[v.group]||[]).push([k,v])});
+Object.entries(groups).forEach(([g,list])=>{const og=document.createElement("optgroup");og.label=g;list.forEach(([k,v])=>og.appendChild(new Option(v.label,k)));dv.appendChild(og)});
+function fillCmp(){
+  const cur=dcmp.value;
+  dcmp.innerHTML="";
+  dcmp.add(new Option("Panel average (27 countries)","avg"));
+  dcmp.add(new Option("Income group average","inc"));
+  dcmp.add(new Option("No comparison","none"));
+  const og=document.createElement("optgroup");og.label="Another country";
+  sortedCountries.filter(c=>c.iso!==dc.value).forEach(c=>og.appendChild(new Option(c.name,c.iso)));
+  dcmp.appendChild(og);
+  dcmp.value = (cur && cur!==dc.value && [...dcmp.options].some(o=>o.value===cur)) ? cur : "avg";
+}
+fillCmp();
+YEARS.slice().reverse().forEach(y=>dyp.add(new Option(y,y)));
+
+const charts={};
+function baseOpts(yLabel, isIndex){
+  const ink=css("--ink"), soft=css("--ink-soft"), rule=css("--rule");
+  return {
+    responsive:true, maintainAspectRatio:false, animation:{duration:matchMedia("(prefers-reduced-motion:reduce)").matches?0:300},
+    interaction:{mode:"index",intersect:false},
+    plugins:{legend:{labels:{color:ink,usePointStyle:true,pointStyle:"line",font:{family:"Instrument Sans",size:12}}},
+      tooltip:{backgroundColor:css("--surface"),titleColor:ink,bodyColor:ink,borderColor:rule,borderWidth:1,padding:10,
+        callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y==null?"":(isIndex?c.parsed.y.toFixed(3):c.parsed.y.toFixed(2))}`}}},
+    scales:{
+      x:{grid:{display:false},ticks:{color:soft,font:{family:"Instrument Sans"}},border:{color:rule}},
+      y:{grid:{color:rule},border:{display:false},ticks:{color:soft,font:{family:"Instrument Sans"}},title:{display:!!yLabel,text:yLabel,color:soft}}
+    }
+  };
+}
+function mk(id,cfg){ if(charts[id]) charts[id].destroy(); charts[id]=new Chart(document.getElementById(id),cfg); }
+function cmpSeries(k){
+  const c=dcmp.value, me=BYISO[dc.value];
+  if(c==="none") return null;
+  if(c==="avg") return {label:"Panel average",data:avgSeries(k)};
+  if(c==="inc"){const isos=D.countries.filter(x=>x.income===me.income).map(x=>x.iso);return {label:`${me.income} average`,data:avgSeries(k,isos)}}
+  return {label:BYISO[c].name,data:series(c,k)};
+}
+function renderDash(){
+  if(typeof Chart==="undefined"){document.querySelectorAll("#page-dashboard .chartbox").forEach(b=>b.innerHTML='<p class="muted" style="padding:20px">Charts could not load. Check your connection and reload the page.</p>');return}
+  const iso=dc.value, k=dv.value, me=BYISO[iso], V=VARS[k], isIdx=V.scale.startsWith("0");
+  const s=series(iso,k), cmp=cmpSeries(k);
+  // KPIs
+  const yl=s[s.length-1], y0=s[0], ch=yl-y0, avg=s.reduce((a,b)=>a+b,0)/s.length;
+  const rankTxt = k==="esi" ? `<div><dt>${val(iso,"rank",LAST)} <span>of ${D.countries.length}</span></dt><dd>Rank in ${LAST}</dd></div>` :
+     `<div><dt>${rankOf(iso,k,LAST)} <span>of ${D.countries.length}</span></dt><dd>Rank on this measure in ${LAST}</dd></div>`;
+  document.getElementById("kpis").innerHTML=`<dl>
+    <div><dt>${fmt(yl,k)}</dt><dd>${esc(V.short)}, ${LAST}</dd></div>
+    ${rankTxt}
+    <div><dt>${ch>=0?"+":"&minus;"}${fmt(Math.abs(ch),k)}</dt><dd>Change, ${FIRST} to ${LAST}</dd></div>
+    <div><dt>${fmt(avg,k)}</dt><dd>Average, ${FIRST}&ndash;${LAST}</dd></div>
+    <div><dt class="sm">${esc(me.income)}</dt><dd>World Bank FY2018</dd></div></dl>`;
+  // Time series
+  document.getElementById("ts-title").textContent=`${V.label}, ${me.name}`;
+  document.getElementById("ts-sub").textContent=`${FIRST} to ${LAST}. Scale: ${V.scale}.`;
+  const ds=[{label:me.name,data:s,borderColor:css("--ink"),backgroundColor:css("--ink"),borderWidth:2.5,pointRadius:2.5,tension:.25}];
+  if(cmp) ds.push({label:cmp.label,data:cmp.data,borderColor:css("--sun"),backgroundColor:css("--sun"),borderWidth:2,borderDash:[6,4],pointRadius:0,tension:.25});
+  const o=baseOpts(V.short,isIdx); if(isIdx){o.scales.y.suggestedMin=0;o.scales.y.suggestedMax=1}
+  mk("ts-chart",{type:"line",data:{labels:YEARS,datasets:ds},options:o});
+  renderProfile(); renderHeat();
+  if(!smv.dataset.touched){smv.value=k;}
+  renderSmall();
+}
+function rankOf(iso,k,y){const arr=D.countries.map(c=>[c.iso,val(c.iso,k,y)]).sort((a,b)=>b[1]-a[1]);return arr.findIndex(a=>a[0]===iso)+1}
+function renderProfile(){
+  const iso=dc.value, y=+dyp.value, me=BYISO[iso], cmp=dcmp.value;
+  let cLabel="Panel average", cVals=DIMS.map(k=>avgSeries(k)[YEARS.indexOf(y)]);
+  if(cmp==="inc"){const isos=D.countries.filter(x=>x.income===me.income).map(x=>x.iso);cLabel=`${me.income} average`;cVals=DIMS.map(k=>avgSeries(k,isos)[YEARS.indexOf(y)])}
+  else if(BYISO[cmp]){cLabel=BYISO[cmp].name;cVals=DIMS.map(k=>val(cmp,k,y))}
+  document.getElementById("prof-sub").textContent=`${me.name} in ${y}, compared with ${cmp==="none"?"the panel average":cLabel.toLowerCase().startsWith("panel")?"the panel average":cLabel}.`;
+  const o=baseOpts("",true); o.indexAxis="y"; o.scales.x.min=0; o.scales.x.max=1; o.scales.x.grid={color:css("--rule")}; o.scales.y.grid={display:false}; o.interaction={mode:"index",axis:"y",intersect:false};
+  o.plugins.tooltip.callbacks={label:c=>` ${c.dataset.label}: ${c.parsed.x.toFixed(3)}`}; o.plugins.legend.labels.pointStyle="rectRounded"; o.plugins.legend.labels.generateLabels=ch=>ch.data.datasets.map((d,i)=>({text:d.label,fillStyle:i===0?css("--ink"):css("--cmp-bar"),strokeStyle:"transparent",pointStyle:"rectRounded",fontColor:css("--ink"),datasetIndex:i,hidden:!ch.isDatasetVisible(i)}));
+  mk("prof-chart",{type:"bar",data:{labels:DIMS.map(k=>VARS[k].short),datasets:[
+    {label:me.name,data:DIMS.map(k=>val(iso,k,y)),backgroundColor:DIMS.map(k=>css(DIMCOL[k])),borderRadius:3,barPercentage:.9,categoryPercentage:.75},
+    {label:cLabel,data:cVals,backgroundColor:css("--cmp-bar"),borderRadius:3,barPercentage:.9,categoryPercentage:.75}]},options:o});
+}
+
+// ===== Heat maps =====
+const HMC=["#F4F8F6","#CFE3D9","#8FC0AA","#4E9781","#1F6B5B","#0B3F36"];
+function hex(h){return [1,3,5].map(i=>parseInt(h.slice(i,i+2),16))}
+function heat(v){
+  const t=Math.max(0,Math.min(1,v))*(HMC.length-1), i=Math.min(HMC.length-2,Math.floor(t)), f=t-i, a=hex(HMC[i]), b=hex(HMC[i+1]);
+  const c=a.map((x,j)=>Math.round(x+(b[j]-x)*f)); const lum=(.299*c[0]+.587*c[1]+.114*c[2]);
+  return `background:rgb(${c});color:${lum<150?"#F4F8F6":"#102A33"}`;
+}
+const HMCOLS=["esi",...DIMS];
+const HMHEAD={esi:"Index",system:"System",access:"Access",market:"Market",env:"Environment",inst:"Institutions"};
+const INCOMES=["Upper-middle income","Lower-middle income","Low income"];
+const hmp=document.getElementById("hm-period"), hms=document.getElementById("hm-sort");
+hmp.add(new Option(`${FIRST}\u2013${LAST} average`,"avg")); YEARS.slice().reverse().forEach(y=>hmp.add(new Option(y,y)));
+[["esi","Energy Security Index"],...DIMS.map(k=>[k,VARS[k].short]),["name","Country name"]].forEach(([v,l])=>hms.add(new Option(l,v)));
+function hval(iso,k){const p=hmp.value;if(p==="avg"){const s=series(iso,k);return s.reduce((a,b)=>a+b,0)/s.length}return val(iso,k,+p)}
+function periodTxt(){return hmp.value==="avg"?`${FIRST}\u2013${LAST} average`:hmp.value}
+function sortList(list){const k=hms.value;return list.slice().sort(k==="name"?(a,b)=>a.name.localeCompare(b.name):(a,b)=>hval(b.iso,k)-hval(a.iso,k))}
+function cells(vals){return vals.map((v,i)=>(i===1?'<td class="gap"></td>':'')+`<td style="${heat(v)}">${v.toFixed(2)}</td>`).join("")}
+function head(){return `<thead><tr><th></th>${HMCOLS.map((k,i)=>(i===1?'<th class="gap"></th>':'')+`<th scope="col" class="${k==="esi"?"idx":""}">${HMHEAD[k]}</th>`).join("")}</tr></thead>`}
+function crow(c){return `<tr class="row${c.iso===dc.value?" sel":""}" data-iso="${c.iso}" tabindex="0"><th scope="row">${esc(c.name)}</th>${cells(HMCOLS.map(k=>hval(c.iso,k)))}</tr>`}
+function renderHeat(){
+  const sortName=hms.options[hms.selectedIndex].text;
+  // 1. by country
+  document.getElementById("hm1-sub").textContent=`${periodTxt()}, sorted by ${sortName.toLowerCase()==="country name"?"country name":sortName}. 0 is least secure, 1 most secure.`;
+  document.getElementById("hm1").innerHTML=`<table class="hm">${head()}<tbody>${sortList(D.countries).map(crow).join("")}</tbody></table>`;
+  // 2. grouped by income
+  document.getElementById("hm2-sub").textContent=`${periodTxt()}, grouped by World Bank income classification (FY2018).`;
+  document.getElementById("hm2").innerHTML=`<table class="hm">${head()}<tbody>${INCOMES.map(g=>{const l=sortList(D.countries.filter(c=>c.income===g));
+    return `<tr class="grp"><th colspan="${HMCOLS.length+2}">${g}<span>${l.length} countries</span></th></tr>`+l.map(crow).join("")}).join("")}</tbody></table>`;
+  // 3. income group averages
+  document.getElementById("hm3-sub").textContent=`Mean of each dimension across the countries in each group, ${periodTxt()}.`;
+  document.getElementById("hm3").innerHTML=`<table class="hm big">${head()}<tbody>${INCOMES.map(g=>{const l=D.countries.filter(c=>c.income===g);
+    return `<tr><th scope="row">${g.replace(" income","")} <span class="muted">(${l.length})</span></th>${cells(HMCOLS.map(k=>l.reduce((s,c)=>s+hval(c.iso,k),0)/l.length))}</tr>`}).join("")}</tbody></table>`;
+  // 4. selected country, dimensions by year
+  const iso=dc.value;
+  document.getElementById("hm4-title").textContent=`Dimensions over time, ${BYISO[iso].name}`;
+  document.getElementById("hm4-sub").textContent=`The composite index and each dimension, ${FIRST} to ${LAST}.`;
+  document.getElementById("hm4").innerHTML=`<table class="hm years"><thead><tr><th></th>${YEARS.map(y=>`<th scope="col">${y}</th>`).join("")}</tr></thead><tbody>${
+    HMCOLS.map(k=>`<tr><th scope="row">${k==="esi"?"<strong>Index</strong>":VARS[k].short}</th>${series(iso,k).map((v,i)=>`<td style="${heat(v)}" title="${VARS[k].short}, ${YEARS[i]}: ${v.toFixed(3)}">${v.toFixed(2)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+}
+function hmPick(e){const r=e.target.closest("tr.row");if(!r)return;if(e.type==="keydown"&&e.key!=="Enter"&&e.key!==" ")return;e.preventDefault();dc.value=r.dataset.iso;fillCmp();renderDash();document.getElementById("kpis").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth",block:"start"})}
+["hm1","hm2"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("click",hmPick);el.addEventListener("keydown",hmPick)});
+hmp.onchange=renderHeat; hms.onchange=renderHeat;
+dc.onchange=()=>{fillCmp();renderDash()};
+dv.onchange=renderDash; dcmp.onchange=()=>{renderDash()};
+dyp.onchange=renderProfile;
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{if(document.getElementById("page-dashboard").classList.contains("active"))renderDash()});
+
+
+// ===== Small multiples: one chart per country =====
+const smv=document.getElementById("sm-var"), sms=document.getElementById("sm-sort"), sma=document.getElementById("sm-avg"), smsh=document.getElementById("sm-shared"), smg=document.getElementById("sm-grid");
+Object.entries(groups).forEach(([g,list])=>{const og=document.createElement("optgroup");og.label=g;list.forEach(([k,v])=>og.appendChild(new Option(v.label,k)));smv.appendChild(og)});
+let smCharts=[];
+function renderSmall(){
+  if(typeof Chart==="undefined") return;
+  const k=smv.value, V=VARS[k], isIdx=V.scale.startsWith("0"), avg=avgSeries(k), last=YEARS.length-1;
+  document.getElementById("sm-title").textContent=`${V.label}: all ${D.countries.length} countries`;
+  document.getElementById("sm-sub").innerHTML=`${FIRST} to ${LAST}. Scale: ${esc(V.scale)}.`;
+  let list=D.countries.slice();
+  const sk=sms.value, incOrder={"Upper-middle income":0,"Lower-middle income":1,"Low income":2};
+  if(sk==="name") list.sort((a,b)=>a.name.localeCompare(b.name));
+  if(sk==="last") list.sort((a,b)=>series(b.iso,k)[last]-series(a.iso,k)[last]);
+  if(sk==="change") list.sort((a,b)=>(series(b.iso,k)[last]-series(b.iso,k)[0])-(series(a.iso,k)[last]-series(a.iso,k)[0]));
+  if(sk==="income") list.sort((a,b)=>incOrder[a.income]-incOrder[b.income]||a.name.localeCompare(b.name));
+  let lo,hi;
+  if(smsh.checked){const all=D.countries.flatMap(c=>series(c.iso,k));lo=Math.min(...all);hi=Math.max(...all);if(isIdx){lo=0;hi=1}else{const p=(hi-lo)*.05;lo-=p;hi+=p}}
+  smCharts.forEach(c=>c.destroy()); smCharts=[];
+  smg.innerHTML=`<div class="sm-legend" style="grid-column:1/-1"><span><i></i>Country</span>${sma.checked?'<span><i class="avg"></i>Panel average</span>':''}</div>`+
+    list.map(c=>{const s=series(c.iso,k), ch=s[last]-s[0];
+      return `<button class="sm-card" type="button" data-iso="${c.iso}" aria-pressed="${c.iso===dc.value}" aria-label="${esc(c.name)}: ${fmt(s[last],k)} in ${LAST}, change ${ch>=0?"+":"-"}${fmt(Math.abs(ch),k)} since ${FIRST}. Select to focus the dashboard on ${esc(c.name)}.">
+        <span class="sm-top"><span class="sm-name">${esc(c.name)}</span><span class="sm-val">${fmt(s[last],k)}</span></span>
+        <span class="sm-meta"><span>${esc(c.income.replace(" income",""))}</span><span class="${ch>=0?"up":""}">${ch>=0?"+":"&minus;"}${fmt(Math.abs(ch),k)} since ${FIRST}</span></span>
+        <span class="sm-chart"><canvas></canvas></span></button>`}).join("");
+  const ink=css("--ink"), sun=css("--sun"), soft=css("--ink-soft"), rule=css("--rule");
+  smg.querySelectorAll(".sm-card").forEach(card=>{
+    const iso=card.dataset.iso, ds=[{data:series(iso,k),borderColor:ink,borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:.25,label:BYISO[iso].name}];
+    if(sma.checked) ds.push({data:avg,borderColor:sun,borderWidth:1.5,borderDash:[4,3],pointRadius:0,pointHoverRadius:0,tension:.25,label:"Panel average"});
+    smCharts.push(new Chart(card.querySelector("canvas"),{type:"line",data:{labels:YEARS,datasets:ds},options:{
+      responsive:true,maintainAspectRatio:false,animation:false,events:["mousemove","mouseout","touchstart","touchmove"],
+      interaction:{mode:"index",intersect:false},
+      plugins:{legend:{display:false},tooltip:{backgroundColor:css("--surface"),titleColor:ink,bodyColor:ink,borderColor:rule,borderWidth:1,padding:6,displayColors:false,
+        callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.parsed.y,k)}`}}},
+      scales:{x:{display:true,grid:{display:false},border:{color:rule},ticks:{color:soft,font:{size:9},maxRotation:0,autoSkip:false,callback:(v,i)=>(i===0||i===YEARS.length-1)?YEARS[i]:""}},
+        y:{min:lo,max:hi,grid:{color:rule,drawTicks:false},border:{display:false},ticks:{color:soft,font:{size:9},maxTicksLimit:3,padding:4}}}}}));
+  });
+}
+smg.addEventListener("click",e=>{const c=e.target.closest(".sm-card");if(!c)return;dc.value=c.dataset.iso;fillCmp();renderDash();document.getElementById("kpis").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth",block:"start"})});
+smv.onchange=()=>{smv.dataset.touched="1";renderSmall()}; sms.onchange=renderSmall; sma.onchange=renderSmall; smsh.onchange=renderSmall;
+
+// ===== Data table =====
+const ty=document.getElementById("t-year"); YEARS.slice().reverse().forEach(y=>ty.add(new Option(y,y)));
+let sortK="rank", sortDir=1;
+const tbody=document.querySelector("#tbl tbody"), filt=document.getElementById("filter");
+function table(){
+  const y=+ty.value, q=filt.value.trim().toLowerCase();
+  const rows=D.countries.map(c=>({name:c.name,income:c.income,iso:c.iso,rank:val(c.iso,"rank",y),esi:val(c.iso,"esi",y),system:val(c.iso,"system",y),access:val(c.iso,"access",y),market:val(c.iso,"market",y),env:val(c.iso,"env",y),inst:val(c.iso,"inst",y)}))
+   .filter(d=>d.name.toLowerCase().includes(q))
+   .sort((a,b)=>{const x=a[sortK],z=b[sortK];return (typeof x==="string"?x.localeCompare(z):(x-z))*sortDir});
+  tbody.innerHTML=rows.map(d=>`<tr><td class="num">${d.rank}</td><td><a href="#dashboard" data-open="${d.iso}">${esc(d.name)}</a></td><td>${esc(d.income)}</td>
+   <td class="num"><div class="bar-cell"><span style="width:${Math.round(d.esi*70)}px"></span>${d.esi.toFixed(3)}</div></td>
+   ${["system","access","market","env","inst"].map(k=>`<td class="num">${d[k].toFixed(3)}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="9">No country matches "${esc(q)}".</td></tr>`;
+  document.querySelectorAll("#tbl th button").forEach(b=>b.closest("th").setAttribute("aria-sort", b.dataset.k===sortK?(sortDir>0?"ascending":"descending"):"none"));
+}
+filt.oninput=table; ty.onchange=table;
+document.querySelectorAll("#tbl th button").forEach(b=>b.onclick=()=>{const k=b.dataset.k;sortDir=(sortK===k)?-sortDir:(["name","income","rank"].includes(k)?1:-1);sortK=k;table()});
+tbody.addEventListener("click",e=>{const a=e.target.closest("[data-open]");if(a){dc.value=a.dataset.open;fillCmp();}});
+
+// ===== Excel download =====
+const dlc=document.getElementById("dl-country"), dlb=document.getElementById("dl-btn"), dls=document.getElementById("dl-status");
+sortedCountries.forEach(c=>dlc.add(new Option(c.name,c.iso)));
+document.querySelectorAll('input[name="scope"]').forEach(r=>r.onchange=()=>{dlc.disabled=document.querySelector('input[name="scope"]:checked').value!=="one"});
+const COLS=["esi","esi_sm","rank","system","access","market","env","inst","inst_sm","POLSTAB","GE","RLAW","CORRUPT"];
+const COLNAME={esi:"ESI",esi_sm:"ESI_softmax",rank:"ESI_rank",system:"System",access:"Access",market:"Market",env:"Environment",inst:"Institutions",inst_sm:"Institutions_softmax",POLSTAB:"POLSTAB",GE:"GE",RLAW:"RLAW",CORRUPT:"CORRUPT"};
+function buildWorkbook(isos){
+  const wb=XLSX.utils.book_new();
+  const head=["Country","ISO3","Income group (WB FY2018)","Year",...COLS.map(k=>COLNAME[k])];
+  const rows=[head];
+  isos.forEach(iso=>{const c=BYISO[iso];YEARS.forEach((y,i)=>rows.push([c.name,iso,c.income,y,...COLS.map(k=>D.values[iso][k][i])]))});
+  const ws=XLSX.utils.aoa_to_sheet(rows);
+  ws["!cols"]=[{wch:18},{wch:6},{wch:22},{wch:6},...COLS.map(()=>({wch:13}))];
+  ws["!autofilter"]={ref:XLSX.utils.encode_range({s:{r:0,c:0},e:{r:rows.length-1,c:head.length-1}})};
+  ws["!freeze"]={xSplit:0,ySplit:1};
+  for(let r=1;r<rows.length;r++) for(let c=4;c<head.length;c++){const ref=XLSX.utils.encode_cell({r,c}); if(ws[ref]&&COLS[c-4]!=="rank") ws[ref].z="0.0000";}
+  XLSX.utils.book_append_sheet(wb,ws,"Data");
+  const vrows=[["Column","Description","Scale"],["Country","Country name",""],["ISO3","ISO 3166-1 alpha-3 code",""],["Income group (WB FY2018)","World Bank income classification, FY2018",""],["Year","Calendar year","2005 to 2023"],
+    ...COLS.map(k=>k==="rank"?["ESI_rank","Rank on the Energy Security Index among the 27 countries in that year (1 = most secure)","1 to 27"]:[COLNAME[k],VARS[k].label+". "+VARS[k].def,VARS[k].scale])];
+  const vs=XLSX.utils.aoa_to_sheet(vrows); vs["!cols"]=[{wch:24},{wch:110},{wch:18}];
+  XLSX.utils.book_append_sheet(wb,vs,"Variables");
+  const nrows=[["Africa Energy Security Index"],[""],["Coverage",`${isos.length===D.countries.length?"27 Sub-Saharan African countries":BYISO[isos[0]].name}, ${FIRST} to ${LAST}`],
+    ["Method","Two-stage principal component analysis over five dimensions; see the Methodology page of the website."],
+    ["Dimensions","energy system adequacy (System), access and affordability (Access), market and external vulnerability (Market), environmental sustainability (Environment), and the political-institutional environment (Institutions)"],
+    ["Sources","World Bank World Development Indicators; World Bank Worldwide Governance Indicators; World Bank Commodity Markets (Pink Sheet)."],
+    ["Cite as","Ho, S.-Y. and Musa, D. C. (2026). Africa Energy Security Index. University of South Africa."],
+    ["Downloaded",new Date().toISOString().slice(0,10)]];
+  const ns=XLSX.utils.aoa_to_sheet(nrows); ns["!cols"]=[{wch:14},{wch:110}];
+  XLSX.utils.book_append_sheet(wb,ns,"Notes");
+  return wb;
+}
+dlb.onclick=async()=>{
+  if(typeof XLSX==="undefined"){dls.textContent="The Excel tool could not load. Check your connection and reload the page.";return}
+  const one=document.querySelector('input[name="scope"]:checked').value==="one";
+  const isos=one?[dlc.value]:D.countries.map(c=>c.iso);
+  const fname=one?`AESI_${BYISO[dlc.value].name.replace(/[^A-Za-z]+/g,"_")}_${FIRST}-${LAST}.xlsx`:`AESI_panel_${FIRST}-${LAST}.xlsx`;
+  const wb=buildWorkbook(isos);
+  dlb.disabled=true; dls.textContent="Preparing your file…";
+  try{
+    if(window.claude && typeof window.claude.use==="function"){
+      const downloads=await window.claude.use("downloads");
+      if(!downloads){dls.textContent="Downloads are not available in this view.";return}
+      const buf=XLSX.write(wb,{bookType:"xlsx",type:"array"});
+      await downloads.save({filename:fname,data:new Blob([buf])});
+      dls.textContent=`Saved ${fname}.`;
+    } else {
+      XLSX.writeFile(wb,fname);
+      dls.textContent=`Downloaded ${fname}.`;
+    }
+  }catch(e){
+    const c=e&&e.code;
+    dls.textContent = c==="declined"?"Download cancelled.":c==="rate_limited"?"A download prompt is already open. Finish it, then try again.":"The file could not be saved here. Try again, or open the page in a different browser.";
+  }finally{dlb.disabled=false}
+};
+
+// ===== Routing =====
+const pages=["home","dashboard","data","methodology","research","about"];
+const nav=document.getElementById("mainnav"), menu=document.querySelector(".menu-btn");
+function route(target){
+  const h=typeof target==="string"?target:(location.hash||"#home").slice(1), p=pages.includes(h)?h:"home";
+  document.querySelectorAll(".page").forEach(s=>s.classList.toggle("active",s.id==="page-"+p));
+  document.querySelectorAll("nav.main a").forEach(a=>{if(a.getAttribute("href")==="#"+p)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  nav.classList.remove("open");menu.setAttribute("aria-expanded","false");
+  window.scrollTo(0,0);
+  if(p==="dashboard") renderDash();
+}
+document.querySelectorAll("[data-jump]").forEach(a=>a.addEventListener("click",e=>{
+  e.preventDefault();
+  const ul=a.closest(".subnav");ul.querySelectorAll("a").forEach(x=>x.removeAttribute("aria-current"));a.setAttribute("aria-current","true");
+  document.getElementById(a.dataset.jump).scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"});
+}));
+document.querySelectorAll(".subnav").forEach(u=>u.querySelector("a").setAttribute("aria-current","true"));
+menu.onclick=()=>{const o=nav.classList.toggle("open");menu.setAttribute("aria-expanded",o)};
+window.addEventListener("hashchange",()=>route());
+document.addEventListener("click",e=>{
+  const a=e.target.closest('a[href^="#"]');
+  if(!a||a.hasAttribute("data-jump")) return;
+  const p=a.getAttribute("href").slice(1);
+  if(!pages.includes(p)) return;
+  e.preventDefault();
+  if(a.dataset.open){dc.value=a.dataset.open;fillCmp();}
+  try{history.pushState(null,"","#"+p)}catch(_){}
+  route(p);
+});
+window.addEventListener("popstate",()=>route());
+dyp.value=LAST;
+paint();detail();table();route();
+
+</script>
+</body>
+</html>
